@@ -1,0 +1,10 @@
+body{
+  background-image: url("assets/img/lineBG.jpg");
+  background-repeat: no-repeat;
+  background-position: left top;
+
+  z-index: -1;
+}
+h1 {
+  color: #fff;
+}
