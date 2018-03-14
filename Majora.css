@@ -63,6 +63,7 @@ a{
     top: 50%;
     transform: translate(-50%, -100%);
     line-height: 35px;
+    width: 100%;
 }
 
 #title-2{
@@ -70,7 +71,7 @@ a{
     left: 50%;
     top: 50%;
     transform: translate(-50%, 0);
-    font-size: 106px;
+    font-size: 16.6vw;
 }
 
 #main_canvas_container {

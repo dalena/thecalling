@@ -1,7 +1,7 @@
 "use strict"
 
 var sourceRepo = "https://github.com/dalena/thecalling";
-var redirect = false;
+var redirect = true;
 var redir_seconds = 10;
 var sound_count = 1
 
