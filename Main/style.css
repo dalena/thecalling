@@ -1,10 +1,70 @@
 body{
-  background-image: url("assets/img/lineBG.jpg");
-  background-repeat: no-repeat;
-  background-position: left top;
-
-  z-index: -1;
+  background: #000;
+  display: grid;
+  width: 100vw;
+  height: 100vh;
+  margin:0;
+  font-family: "Baskerville Old Face", "Sporting Grotesque", serif;
+  font-size: 5vw;
+  line-height: 6.5vw;
 }
+#container{
+  display: grid;
+  grid-template-columns:7% 74% 18%;
+  grid-template-rows: 0% 85% 12%;
+  grid-template-areas:
+  "bTop bTop bTop"
+  ". myCanvas bRight"
+  ". sevda sevda";
+  width: 102vw;
+  height: 102vh;
+  margin: 0;
+
+}
+
 h1 {
-  color: #fff;
+  color: #f6f6f6;
+  margin: auto;
+  font-family: "Baskerville Old Face", serif;
+}
+
+h2 {
+  color: #000;
+  margin: auto;
+  font-family: "Baskerville Old Face", serif;
+  font-size: 4vw;
+  line-height: 1vw;
+}
+
+h3 {
+  color: #000;
+  margin: 0;
+  font-family: "Baskerville Old Face", serif;
+  font-size: 4vw;
+  line-height: 1vw;
+}
+
+
+#myCanvas {
+  background: transparent;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  margin: auto;
+
+}
+#myCanvas > div {
+  margin: auto;
+    text-align: center;
+  font-size: 30px;
+}
+.item5 {
+  grid-area: 2 / 2 / 2 / 2;
+
+}
+.item6 {
+  grid-area: 2 / 2 / 2 / 2;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+
 }

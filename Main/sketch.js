@@ -1,6 +1,5 @@
-var canvas;
 const block_size = 25;
-const block_core = 1;
+const block_core = 1.8;
 const block_move_distance = 10;
 const block_move_range = 70;
 const block_scale = 0.02;
@@ -25,19 +24,24 @@ let blocks;
 */
 let ripples = [];
 
-
+var canvasDiv = document.getElementById('myCanvas');
+// var width = document.getElementById('myCanvas').offsetWidth;
+// var height = document.getElementById('myCanvas').offsetHeight;
 function setup() {
 
-  canvas = createCanvas(windowWidth, windowHeight);
-  canvas.position(0,0);
-  canvas.style('z-index','-1');
+  var sketchCanvas = createCanvas(windowWidth, windowHeight);
+  sketchCanvas.parent("myCanvas");
+  sketchCanvas.position(0,0);
+  sketchCanvas.style('z-index','-1');
   noStroke();
   rectMode(CENTER);
   noSmooth();
 
 
-  let left_padding = Math.round(width % block_size) / 2;
-  let top_padding = Math.round(height % block_size) / 2;
+  let padding_scale = 1;
+  let top_padding = Math.round(width % block_size) * padding_scale;
+  let left_padding = top_padding * 1;
+  // let top_padding = Math.round(height % block_size) * 5;
 
   blocks = Array.from({ length: Math.floor(height / block_size) }, (v, y) =>
   Array.from({ length: Math.floor(width / block_size) }, (v, x) =>
@@ -79,13 +83,6 @@ function draw() {
     ripple.checkKill();
   });
 
-  if (show_ripples) {
-    strokeWeight(2);
-    ripples.forEach((ripple, i) => {
-      ripple.draw();
-    })
-  }
-
   noStroke();
   blocks.forEach((line, i) =>
   line.forEach((block, j) => {
@@ -93,15 +90,7 @@ function draw() {
     block.render();
   })
 );
-if (show_info) {
-  rectMode(CORNER);
-  fill(20, 200);
-  rect(0, 0, 120, 64);
-  fill(220);
-  textFont('monospace', 16);
-  text('Ripples: ' + ripples.length, 10, 24);
-  text('FPS: ' + avgFps, 10, 48);
-}
+
 }
 
 // function mousePressed() {
@@ -116,15 +105,7 @@ function mouseMoved() {
 
 function mouseDragged() {
   if (random() < pow(fps / 60, 3) * mouse_speed / 20) {
-    ripples.push(new Ripple(mouseX, mouseY, 0.6 * mouse_speed / 40));
-  }
-}
-
-function keyPressed() {
-  if (keyCode === 73) {
-    show_info = !show_info;
-  } else if (keyCode === 82) {
-    show_ripples = !show_ripples;
+    ripples.push(new Ripple(mouseX, mouseY, 0.3 * mouse_speed / 40));
   }
 }
 
@@ -132,7 +113,6 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 
 }
-
 
 class Block {
   constructor(x, y, id) {
@@ -142,8 +122,8 @@ class Block {
 
   render() {
     fill(255, cubicInOut(this.amp, 60, 240, 15));
-    rect(this.pos.x + this.diff.x, this.pos.y + this.diff.y, (block_core + this.amp * block_scale) * 5, block_core + this.amp * block_scale * 0.5);
-    rect(this.pos.x + this.diff.x, this.pos.y + this.diff.y, block_core + this.amp * block_scale * 0.5, (block_core + this.amp * block_scale) * 5);
+    rect(this.pos.x + this.diff.x, this.pos.y + this.diff.y, (block_core + this.amp * block_scale) * 2, block_core + this.amp * block_scale * 0.5);
+    rect(this.pos.x + this.diff.x, this.pos.y + this.diff.y, block_core + this.amp * block_scale * 0.5, (block_core + this.amp * block_scale) * 2);
   }
 
   /**
