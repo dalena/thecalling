@@ -1,4 +1,8 @@
 body{
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> initialization
   background: #000;
   display: grid;
   width: 100vw;
@@ -19,6 +23,8 @@ body{
   width: 102vw;
   height: 102vh;
   margin: 0;
+<<<<<<< HEAD
+=======
 
 }
 
@@ -67,4 +73,62 @@ h3 {
   justify-content: center;
   align-items: center;
 
+=======
+  background-image: url("assets/img/lineBG.jpg");
+  background-repeat: no-repeat;
+  background-position: left top;
+>>>>>>> initialization
+
+}
+
+h1 {
+<<<<<<< HEAD
+  color: #f6f6f6;
+  margin: auto;
+  font-family: "Baskerville Old Face", serif;
+}
+
+h2 {
+  color: #000;
+  margin: auto;
+  font-family: "Baskerville Old Face", serif;
+  font-size: 4vw;
+  line-height: 1vw;
+}
+
+h3 {
+  color: #000;
+  margin: 0;
+  font-family: "Baskerville Old Face", serif;
+  font-size: 4vw;
+  line-height: 1vw;
+}
+
+
+#myCanvas {
+  background: transparent;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  margin: auto;
+
+}
+#myCanvas > div {
+  margin: auto;
+    text-align: center;
+  font-size: 30px;
+}
+.item5 {
+  grid-area: 2 / 2 / 2 / 2;
+
+}
+.item6 {
+  grid-area: 2 / 2 / 2 / 2;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+
+=======
+  color: #fff;
+>>>>>>> b7e9a48183b7bcdd73a85f2358c66099af425f00
+>>>>>>> initialization
 }
