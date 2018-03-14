@@ -3,26 +3,56 @@
 
 <head>
 
+  <!-- Meta -->
   <title>Majora</title>
-
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
 
+  <!-- Style Modules -->
+  <link rel="stylesheet" href=".\css\bootstrap.min.css">
   <link rel="stylesheet" href="Majora.css" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i" rel="stylesheet">
 
+  <link href="https://fonts.googleapis.com/css?family=Inknut+Antiqua:300,400,900" rel="stylesheet">
+
+
+  <!-- JS Modules -->
+  <script type="text/javascript" src=".\libs\howler.min.js"></script>
   <script type="text/javascript" src="..\..\dist\b4w.js"></script>
-
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
   <script type="text/javascript" src="Majora.js"></script>
-
 </head>
 
 <body>
   <div id="main_canvas_container"></div>
-  <div id="preloader_cont">
-    <div id="prelod_static_path">
-      <div id="prelod_dynamic_path"></div>
+  <div class="container vertical-center">
+    <div class="row auto-margin">
+      <div class="col-md-12">
+
+        <div id="preloader_cont" class="opacity-zero animated">
+          <h5 id="title-1" class="center" style="margin-bottom: 0">SEVDALIZA PRESENTS</h5>
+          <h1 id="title-2" class="center">MAJORA</h1>
+          <div id="prelod_static_path">
+            <div id="prelod_dynamic_path"></div>
+          </div>
+        </div>
+
+        <div id="webgl-fail" class="center opacity-zero animated anim-1">
+          <h1>Initialization Failed</h1>
+          <h5>Majora depends on technologies not supported by your browser. </h5>
+          <h5>
+            Please update to the latest version of
+            <a href="https://www.google.com/chrome/">Chrome</a>.
+          </h5>
+          <p class="italic">Redirecting to main website in
+            <span id="redir-seconds">10</span> seconds.</p>
+        </div>
+      </div>
+
     </div>
   </div>
+
 </body>
 
 </html>

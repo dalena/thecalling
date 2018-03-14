@@ -1,7 +1,76 @@
 body {
     background-color: #000;
     margin: 0;
-    overflow: hidden
+    overflow: hidden;
+    color: white;
+    font-family: 'Libre Baskerville', serif;
+}
+
+h1 {
+    font-family: 'Inknut Antiqua', serif;
+    font-weight: 900;
+}
+
+a{
+    color: white;
+    text-decoration: underline;
+    font-family: 'Inknut Antiqua', serif;
+    font-weight: 400;
+}
+
+.center{
+    text-align: center;
+}
+
+.auto-margin{
+    margin: auto;
+}
+
+.opacity-zero {
+    opacity: 0;
+}
+
+.opacity-full{
+    opacity: 1;
+}
+
+.animated {
+    transition-property: all;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in-out;
+    transition-delay: 0s;
+}
+
+.anim-1 {
+    transition-duration: 5s;
+}
+
+.vertical-center {
+    min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+    min-height: 100vh; /* These two lines are counted as one :-)       */
+  
+    display: flex;
+    align-items: center;
+  }
+
+.italic{
+    font-style: italic;
+}
+
+#title-1{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -100%);
+    line-height: 35px;
+}
+
+#title-2{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, 0);
+    font-size: 106px;
 }
 
 #main_canvas_container {
@@ -39,7 +108,7 @@ div#preloader_cont {
     height: 100%;
     top: 0;
     left: 0;
-    background-color: #d90018;
+    background-color: transparent;
     background-repeat: no-repeat;
     background-position: center center;
     visibility: hidden
