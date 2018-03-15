@@ -1,10 +1,16 @@
 "use strict"
 
+console.style('<img="background:url(https://static1.squarespace.com/static/523950d1e4b0eacf372043db/t/5583208ae4b0dd6ca1a4b945/1434656921780/);width:250px;height:250px">');
+
 var glopts = {
     "sourceRepo": "https://github.com/dalena/thecalling",
     "redirect": true,
     "redir_seconds": 10,
     "sound_count": 28,
+}
+
+function loggy(str) {
+    console.style('<b="font-size:14px;color:red;">[M]|</b> ' + str);
 }
 
 function Snd(type) {
@@ -137,7 +143,7 @@ function Snd(type) {
         rmsSmoothScaled: 0
     }
 
-    this.rms = function(buffer){
+    this.rms = function (buffer) {
         var rms = 0;
         for (var i = 0; i < buffer.length; i++) {
             rms += buffer[i] * buffer[i];
@@ -150,7 +156,7 @@ function Snd(type) {
     this.analyze = function () {
         var t = this;
         if (!t.isPrepared) {
-            console.log("SOUND: Not prepared.");
+            loggy("SOUND: Not prepared.");
             return;
         }
 
@@ -158,7 +164,6 @@ function Snd(type) {
 
         var rms = t.rms(t.buffer);
         var rmsSmooth = this.avgRMS(rms, this.avgArr, this.avgLimit);
-
 
         function scale(val) {
             var res = Math.abs(val - 127);
@@ -174,7 +179,6 @@ function Snd(type) {
         t.stats.rmsSmooth = rmsSmooth;
         t.stats.rmsScaled = rmsScaled;
         t.stats.rmsSmoothScaled = rmsSmoothScaled;
-
 
         this.graph && this.drawGraph(30 - rmsScaled, 30 - rmsSmoothScaled * 2);
     }
@@ -207,7 +211,7 @@ b4w.register("Majora_main", function (exports, require) {
     var APP_ASSETS_PATH = m_cfg.get_assets_path("Majora");
 
     function init() {
-        console.log("Source available at:", glopts.sourceRepo);
+        loggy("Source available at: " + glopts.sourceRepo);
 
         if (true)
             m_app.init({
@@ -232,7 +236,6 @@ b4w.register("Majora_main", function (exports, require) {
         snd.initBG();
         snd.bg.play();
         snd.bg.fade(0, 0.3, 6000);
-
 
         $('#preloader_cont').css('visibility', 'visible');
         $('#preloader_cont').removeClass('opacity-zero');
@@ -279,7 +282,7 @@ b4w.register("Majora_main", function (exports, require) {
 
     function load_cb(data_id, success) {
         if (!success) {
-            console.log("Loading failed.");
+            loggy("Loading failed.");
             return;
         }
 
@@ -299,7 +302,7 @@ b4w.register("Majora_main", function (exports, require) {
         snd.intro.play();
         snd.intro.fade(0, 0.5, 1000);
         snd.introEnd = function () {
-            console.log("SOUND: Intro ended.")
+            loggy("SOUND: Intro ended.")
             startOutro()
         }
         snd.intro.once('play', snd.prepare());
@@ -311,13 +314,13 @@ b4w.register("Majora_main", function (exports, require) {
         snd.outro.play();
         snd.outro.fade(0, 0.5, 1000);
         snd.outroEnd = function () {
-            console.log("SOUND: Outro ended.")
+            loggy("SOUND: Outro ended.")
         }
         snd.outro.once('end', snd.outroEnd);
     }
 
     function webgl_failed() {
-        console.log("WebGL initialization failed.");
+        loggy("WebGL initialization failed.");
 
         $('#main_canvas_container').remove();
         $('#webgl-fail').removeClass('opacity-zero');
