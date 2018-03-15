@@ -137,22 +137,26 @@ function Snd(type) {
         rmsSmoothScaled: 0
     }
 
+    this.rms = function(buffer){
+        var rms = 0;
+        for (var i = 0; i < buffer.length; i++) {
+            rms += buffer[i] * buffer[i];
+        }
+        rms /= buffer.length;
+        rms = Math.sqrt(rms);
+        return rms
+    }
+
     this.analyze = function () {
-        if (!this.isPrepared) {
+        var t = this;
+        if (!t.isPrepared) {
             console.log("SOUND: Not prepared.");
             return;
         }
 
-        var t = this;
         this.analyser.getByteTimeDomainData(this.buffer);
 
-        var rms = 0;
-
-        for (var i = 0; i < t.buffer.length; i++) {
-            rms += t.buffer[i] * t.buffer[i];
-        }
-        rms /= t.buffer.length;
-        rms = Math.sqrt(rms);
+        var rms = t.rms(t.buffer);
         var rmsSmooth = this.avgRMS(rms, this.avgArr, this.avgLimit);
 
 
