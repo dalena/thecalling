@@ -11,18 +11,18 @@ h1 {
     font-weight: 900;
 }
 
-a{
+a {
     color: white;
     text-decoration: underline;
     font-family: 'Inknut Antiqua', serif;
     font-weight: 400;
 }
 
-.center{
+.center {
     text-align: center;
 }
 
-.auto-margin{
+.auto-margin {
     margin: auto;
 }
 
@@ -30,7 +30,7 @@ a{
     opacity: 0;
 }
 
-.opacity-full{
+.opacity-full {
     opacity: 1;
 }
 
@@ -46,18 +46,19 @@ a{
 }
 
 .vertical-center {
-    min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
-    min-height: 100vh; /* These two lines are counted as one :-)       */
-  
+    min-height: 100%;
+    /* Fallback for browsers do NOT support vh unit */
+    min-height: 100vh;
+    /* These two lines are counted as one :-)       */
     display: flex;
     align-items: center;
-  }
+}
 
-.italic{
+.italic {
     font-style: italic;
 }
 
-#title-1{
+#title-1 {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -66,7 +67,15 @@ a{
     width: 100%;
 }
 
-#title-2{
+
+#oscilloscope {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+
+#title-2 {
     position: absolute;
     left: 50%;
     top: 50%;

@@ -1,65 +1,178 @@
 "use strict"
 
-var sourceRepo = "https://github.com/dalena/thecalling";
-var redirect = true;
-var redir_seconds = 10;
-var sound_count = 1
+var glopts = {
+    "sourceRepo": "https://github.com/dalena/thecalling",
+    "redirect": true,
+    "redir_seconds": 10,
+    "sound_count": 28,
+}
 
-var sounds = {
-    "bg": function () {
+function Snd(type) {
+    this.fftSize = 512;
+    this.smoothingTimeConstant = 1.0;
+
+    this.graph = true;
+
+    this.bg = undefined;
+    this.intro = undefined;
+    this.outro = undefined;
+
+    this.initSound = function (options) {
         var sound = new Howl({
             src: [
-                './assets/audio/bg_theme.altconv.webm',
-                './assets/audio/bg_theme.altconv.oga',
-                './assets/audio/bg_theme.mp3'
+                './assets/audio/' + options.file + '.altconv.webm',
+                './assets/audio/' + options.file + '.altconv.oga',
+                './assets/audio/' + options.file + '.mp3'
             ],
+            autoplay: options.autoplay,
+            rate: options.rate,
+            loop: options.loop,
+            volume: options.volume
+        });
+
+        return sound;
+    }
+
+    this.initBG = function () {
+        var options = {
+            file: "bg_theme",
             autoplay: false,
-            rate: 0.3,
+            rate: 0.5,
             loop: true,
             volume: 0
-        });
-
-        sound.setEvent = function (event, callback) {
-            sound.once(event, callback)
         }
 
-        sounds.bg = sound;
-    },
+        this.bg = this.initSound(options);
+    };
 
-    "intro": function () {
-        var sound = new Howl({
-            src: [
-                './assets/audio/mar_1.altconv.webm',
-                './assets/audio/mar_1.altconv.oga',
-                './assets/audio/mar_1.mp3'
-            ],
+    this.initIntro = function () {
+        var options = {
+            file: "intro",
             autoplay: false,
-            rate: 0.8,
+            rate: 0.9,
+            loop: false,
             volume: 0
-        });
+        }
+        this.intro = this.initSound(options);
+    };
 
-        sounds.intro = sound;
-    },
-
-    "outro": function () {
-        var idx = Math.floor(Math.random() * sound_count) + 1;
-        var sound = new Howl({
-            src: [
-                './assets/audio/mar_' + idx + '.altconv.webm',
-                './assets/audio/mar_' + idx + '.altconv.oga',
-                './assets/audio/mar_' + idx + '.mp3'
-            ],
+    this.initOutro = function () {
+        var idx = Math.floor(Math.random() * glopts.sound_count) + 1;
+        var options = {
+            file: "poem" + idx,
             autoplay: false,
+            rate: 0.9,
+            loop: false,
             volume: 0
-        });
+        }
 
-        sounds.outro = sound;
-    },
+        this.outro = this.initSound(options);
+    };
 
-    "load": function (key, from, to, dur, callback) {
-        sounds[key]();
-        sounds[key].play();
-        sounds[key].fade(from, to, dur);
+    this.analyser = undefined;
+    this.buffer = undefined;
+    this.isPrepared = false;
+
+    this.prepare = function (_addGraph) {
+        var analyser = Howler.ctx.createAnalyser();
+        Howler.masterGain.connect(analyser);
+        analyser.connect(Howler.ctx.destination);
+        analyser.smoothingTimeConstant = this.smoothingTimeConstant;
+        analyser.fftSize = this.fftSize;
+        var buffer = new Uint8Array(this.fftSize);
+        analyser.getByteTimeDomainData(buffer);
+        this.analyser = analyser;
+        this.buffer = buffer;
+        this.isPrepared = true;
+        this.graph && this.addGraph();
+    }
+
+    this.graphCanvas;
+    this.graphContext;
+
+    this.graphX = 0;
+
+    this.addGraph = function () {
+        var canvasID = 'snd-graph';
+        $('body').append(`<canvas id="` + canvasID + `" width="1024" height="200" style="    position: absolute;top: 0;left: 0;"></canvas>`);
+        var element = document.getElementById(canvasID);
+        this.graphCanvas = element;
+        this.graphContext = this.graphCanvas.getContext('2d');
+    }
+
+    this.drawGraph = function (a, b) {
+        var t = this;
+        t.graphX++;
+        if (t.graphX > t.graphCanvas.width) {
+            t.graphX = 0;
+            t.graphContext.clearRect(0, 0, t.graphCanvas.width, t.graphCanvas.height)
+        }
+        t.graphContext.fillStyle = "red";
+        t.graphContext.fillRect(t.graphX, a, 1, 1);
+        t.graphContext.fillStyle = "yellow";
+        t.graphContext.fillRect(t.graphX, b, 1, 1);
+    }
+
+    this.avgArr = [];
+    this.avgLimit = 128 / 4;
+
+    this.avgRMS = function (val, rmsArr, rmsArrLimit) {
+        rmsArr.push(val);
+        if (rmsArr.length > rmsArrLimit)
+            rmsArr.shift();
+        if (rmsArr.length < rmsArrLimit)
+            return val;
+        var sum = 0;
+        for (var i = 0; i < rmsArr.length; i++) {
+            sum += rmsArr[i];
+        }
+
+        return sum / rmsArrLimit;
+    }
+
+    this.stats = {
+        rms: 0,
+        rmsSmooth: 0,
+        rmsScaled: 0,
+        rmsSmoothScaled: 0
+    }
+
+    this.analyze = function () {
+        if (!this.isPrepared) {
+            console.log("SOUND: Not prepared.");
+            return;
+        }
+
+        var t = this;
+        this.analyser.getByteTimeDomainData(this.buffer);
+
+        var rms = 0;
+
+        for (var i = 0; i < t.buffer.length; i++) {
+            rms += t.buffer[i] * t.buffer[i];
+        }
+        rms /= t.buffer.length;
+        rms = Math.sqrt(rms);
+        var rmsSmooth = this.avgRMS(rms, this.avgArr, this.avgLimit);
+
+
+        function scale(val) {
+            var res = Math.abs(val - 127);
+            // res = res * 100
+            // res = Math.round(res) / 100
+            return res;
+        }
+
+        var rmsScaled = scale(rms);
+        var rmsSmoothScaled = scale(rmsSmooth);
+
+        t.stats.rms = rms;
+        t.stats.rmsSmooth = rmsSmooth;
+        t.stats.rmsScaled = rmsScaled;
+        t.stats.rmsSmoothScaled = rmsSmoothScaled;
+
+
+        this.graph && this.drawGraph(30 - rmsScaled, 30 - rmsSmoothScaled * 2);
     }
 }
 
@@ -69,14 +182,19 @@ b4w.register("Majora_main", function (exports, require) {
     // MODULES
     var m_app = require("app");
     var m_main = require("main");
+    var m_light = require("lights");
     var m_cfg = require("config");
     var m_data = require("data");
     var m_preloader = require("preloader");
     var m_ver = require("version");
+    var m_gryo = require("gyroscope");
+
+    var snd = new Snd();
 
     // EXPORTS
     exports.init = init;
     exports.webgl_failed = webgl_failed
+    exports.snd = snd;
 
     // APP MODE
     var DEBUG = (m_ver.type() == "DEBUG");
@@ -85,7 +203,7 @@ b4w.register("Majora_main", function (exports, require) {
     var APP_ASSETS_PATH = m_cfg.get_assets_path("Majora");
 
     function init() {
-        console.log("Source available at:", sourceRepo);
+        console.log("Source available at:", glopts.sourceRepo);
 
         if (true)
             m_app.init({
@@ -107,7 +225,9 @@ b4w.register("Majora_main", function (exports, require) {
         }
 
         // Start BACKGROUND theme sound
-        sounds.load("bg", 0, 0.1, 6000);
+        snd.initBG();
+        snd.bg.play();
+        snd.bg.fade(0, 0.3, 6000);
 
 
         $('#preloader_cont').css('visibility', 'visible');
@@ -140,19 +260,56 @@ b4w.register("Majora_main", function (exports, require) {
         }
     }
 
-    function load_cb(data_id, success) {
+    function render_cb() {
+        // console.log("render cb");
+        snd.rmsArrLimit = 64;
+        snd.analyze();
 
+        var lamps = m_light.get_lamps();
+        var energy = snd.stats.rmsSmoothScaled;
+        // if (energy > 0.7) {
+        m_light.set_light_energy(lamps[0], energy * 2);
+        m_light.set_light_energy(lamps[1], 0);
+        // }
+    }
+
+    function load_cb(data_id, success) {
         if (!success) {
             console.log("Loading failed.");
             return;
         }
 
+        m_main.set_render_callback(render_cb);
+
         m_app.enable_camera_controls();
+        m_gryo.enable_camera_rotation();
 
         // If success for load, play the INTRO sound
         setTimeout(function () {
-            sounds.load("intro", 0, 0.5, 1000);
-        }, 6000);
+            startIntro();
+        }, 500);
+    }
+
+    function startIntro() {
+        snd.initIntro();
+        snd.intro.play();
+        snd.intro.fade(0, 0.5, 1000);
+        snd.introEnd = function () {
+            console.log("SOUND: Intro ended.")
+            startOutro()
+        }
+        snd.intro.once('play', snd.prepare());
+        snd.intro.once('end', snd.introEnd);
+    }
+
+    function startOutro() {
+        snd.initOutro();
+        snd.outro.play();
+        snd.outro.fade(0, 0.5, 1000);
+        snd.outroEnd = function () {
+            console.log("SOUND: Outro ended.")
+        }
+        snd.outro.once('end', snd.outroEnd);
     }
 
     function webgl_failed() {
@@ -166,9 +323,9 @@ b4w.register("Majora_main", function (exports, require) {
         var seconds_span = $('#redir-seconds');
 
         function incrementSeconds() {
-            redir_seconds -= 1;
-            seconds_span.text(redir_seconds)
-            redir_seconds == 0 && redirect && (document.location.href = "http://sevdaliza.com");
+            glopts.redir_seconds -= 1;
+            seconds_span.text(glopts.redir_seconds)
+            glopts.redir_seconds == 0 && glopts.redirect && (document.location.href = "http://sevdaliza.com");
         }
 
         var cancel = setInterval(incrementSeconds, 1000);
