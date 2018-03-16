@@ -39,6 +39,13 @@ function Snd(type) {
         return sound;
     }
 
+    this.introPlay = false;
+    this.introEnd = false;
+    this.introFade = false;
+    this.outroPlay = false;
+    this.outroEnd = false;
+    this.outroFade = false;
+
     this.initBG = function () {
         var options = {
             file: "bg_theme",
@@ -90,6 +97,7 @@ function Snd(type) {
         this.analyser = analyser;
         this.buffer = buffer;
         this.isPrepared = true;
+        loggy("SOUND: Prepared.");
         this.graph && this.addGraph();
     }
 
@@ -121,13 +129,17 @@ function Snd(type) {
 
     this.avgArr = [];
     this.avgLimit = 128 / 4;
+    this.avgFilled = false;
 
     this.avgRMS = function (val, rmsArr, rmsArrLimit) {
         rmsArr.push(val);
-        if (rmsArr.length > rmsArrLimit)
+        if (rmsArr.length == rmsArrLimit)
+            loggy("SOUND: Mean buffer filled.");
+        if (rmsArr.length > rmsArrLimit) {
             rmsArr.shift();
-        if (rmsArr.length < rmsArrLimit)
-            return val;
+            this.avgFilled = true;
+        }
+
         var sum = 0;
         for (var i = 0; i < rmsArr.length; i++) {
             sum += rmsArr[i];
@@ -156,7 +168,6 @@ function Snd(type) {
     this.analyze = function () {
         var t = this;
         if (!t.isPrepared) {
-            loggy("SOUND: Not prepared.");
             return;
         }
 
@@ -196,6 +207,12 @@ b4w.register("Majora_main", function (exports, require) {
     var m_preloader = require("preloader");
     var m_ver = require("version");
     var m_gryo = require("gyroscope");
+    var m_cont = require("container");
+    var m_mouse = require("mouse");
+    var m_cam = require("camera");
+    var m_scenes = require("scenes");
+    var m_anim = require("animation");
+    var m_time = require("time");
 
     var snd = new Snd();
 
@@ -233,9 +250,7 @@ b4w.register("Majora_main", function (exports, require) {
         }
 
         // Start BACKGROUND theme sound
-        snd.initBG();
-        snd.bg.play();
-        snd.bg.fade(0, 0.3, 6000);
+        startBG();
 
         $('#preloader_cont').css('visibility', 'visible');
         $('#preloader_cont').removeClass('opacity-zero');
@@ -268,16 +283,27 @@ b4w.register("Majora_main", function (exports, require) {
     }
 
     function render_cb() {
-        // console.log("render cb");
         snd.rmsArrLimit = 64;
         snd.analyze();
 
         var lamps = m_light.get_lamps();
         var energy = snd.stats.rmsSmoothScaled;
-        // if (energy > 0.7) {
-        m_light.set_light_energy(lamps[0], energy * 2);
-        m_light.set_light_energy(lamps[1], 0);
-        // }
+
+        if (snd.avgFilled && !snd.introEnd && energy > 0.7) {
+            m_light.set_light_energy(objs.light_point, energy * 2);
+            // m_light.set_light_energy(objs.light_point, 0);
+        }
+    }
+
+
+    var objs = {
+        cam: undefined,
+        light_point: undefined,
+        light_point_back: undefined
+    };
+
+    var flags = {
+
     }
 
     function load_cb(data_id, success) {
@@ -286,37 +312,142 @@ b4w.register("Majora_main", function (exports, require) {
             return;
         }
 
+        objs.cam = m_scenes.get_object_by_name("camera");
+        objs.light_point= m_scenes.get_object_by_name("light_point");
+        objs.light_point_back = m_scenes.get_object_by_name("light_point_back");
+        // m_anim.apply(objs.light_point, "on", 0);
+        // m_anim.play(objs.light_point, null, 0);
+
+        introFadeIn(startIntro);
+
+        // camera = m_scene.get_active_camera();
+
         m_main.set_render_callback(render_cb);
 
         m_app.enable_camera_controls();
         m_gryo.enable_camera_rotation();
 
+        var canvas_elem = m_cont.get_canvas();
+        canvas_elem.addEventListener("mouseup", function (e) {
+            m_mouse.request_pointerlock(canvas_elem, null, null, null, null, rot_cb);
+        }, false);
+        m_mouse.set_plock_smooth_factor(5);
+
         // If success for load, play the INTRO sound
-        setTimeout(function () {
-            startIntro();
-        }, 500);
+
     }
+
+    var camera_smooth_fact = 2;
+    var camera_rot_fact = 5;
+
+    function rot_cb(rot_x, rot_y) {
+        m_cam.rotate_camera(objs.cam, rot_x * camera_rot_fact, rot_y * camera_rot_fact);
+    }
+
+    function startBG() {
+        snd.initBG();
+        snd.bg.play();
+        snd.bg.fade(0, 0.3, 6000);
+    }
+
+    function introFadeIn(callback) {
+        m_time.animate(0, 1.4, 6000, function (v) {
+            m_light.set_light_energy(objs.light_point, v);
+        })
+        m_time.animate(0, 1, 6000, function (v) {
+            m_scenes.set_god_rays_params({
+                god_rays_max_ray_length: 2,
+                god_rays_intensity: v,
+                god_rays_steps: 10
+            });
+        })
+        m_time.set_timeout(function () {
+            loggy("ANIM: Intro fade-in completed.");
+            callback();
+        }, 6000);
+    }
+
+    function outroFadeIn(callback) {
+        m_scenes.set_dof_params({ dof_on: false });
+        m_cam.target_set_horizontal_limits(objs.cam, null);
+        m_cam.target_set_vertical_limits(objs.cam, null);
+        m_time.animate(0, 1.4, 6000, function (v) {
+            m_light.set_light_energy(objs.light_point, v);
+        })
+        m_time.animate(0, 1.4, 6000, function (v) {
+            m_light.set_light_energy(objs.light_point_back, v);
+        })
+
+        m_time.set_timeout(function () {
+            loggy("ANIM: Outro fade-in completed.");
+            callback();
+        }, 6000);
+    }
+
+    function introFadeOut() {
+        m_time.animate(1.4, 0, 6000, function (v) {
+            m_light.set_light_energy(objs.light_point, v);
+        })
+        m_time.animate(1, 0, 6000, function (v) {
+            m_scenes.set_god_rays_params({
+                god_rays_max_ray_length: 2,
+                god_rays_intensity: v,
+                god_rays_steps: 10
+            });
+        })
+        m_time.set_timeout(function () {
+            loggy("ANIM: Fade-out completed.")
+            m_scenes.hide_object(m_scenes.get_object_by_name("hide"))
+            m_scenes.hide_object(m_scenes.get_object_by_name("eye_left"))
+            m_scenes.hide_object(m_scenes.get_object_by_name("eye_right"))
+            m_scenes.show_object(m_scenes.get_object_by_name("crystal"))
+            outroFadeIn(startOutro);
+        }, 6000);
+    }
+
 
     function startIntro() {
         snd.initIntro();
         snd.intro.play();
-        snd.intro.fade(0, 0.5, 1000);
-        snd.introEnd = function () {
-            loggy("SOUND: Intro ended.")
-            startOutro()
-        }
-        snd.intro.once('play', snd.prepare());
-        snd.intro.once('end', snd.introEnd);
+        snd.intro.once('play', function () {
+            snd.introPlay = true;
+            loggy("AUDIO: Intro played.");
+
+            snd.prepare()
+        });
+        snd.intro.fade(0, 0.5, 6000);
+        snd.intro.once('fade', function () {
+            snd.introFade = true;
+            loggy("AUDIO: Intro fade-in completed.");
+        });
+        snd.intro.once('end', function () {
+            snd.introEnd = true;
+            loggy("AUDIO: Intro ended.");
+
+            endIntro();
+        });
+    }
+
+    function endIntro() {
+        introFadeOut()
     }
 
     function startOutro() {
         snd.initOutro();
         snd.outro.play();
-        snd.outro.fade(0, 0.5, 1000);
-        snd.outroEnd = function () {
-            loggy("SOUND: Outro ended.")
-        }
-        snd.outro.once('end', snd.outroEnd);
+        snd.outro.once('play', function () {
+            snd.outroPlay = true;
+            loggy("AUDIO: Outro played.");
+        });
+        snd.outro.fade(0, 0.5, 6000);
+        snd.outro.once('fade', function () {
+            snd.introFade = true;
+            loggy("AUDIO: Outro fade-in completed.");
+        });
+        snd.outro.once('end', function () {
+            snd.outroEnd = true;
+            loggy("AUDIO: Outro ended.");
+        });
     }
 
     function webgl_failed() {
