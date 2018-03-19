@@ -213,6 +213,7 @@ b4w.register("Majora_main", function (exports, require) {
     var m_scenes = require("scenes");
     var m_anim = require("animation");
     var m_time = require("time");
+    var m_ctl = require("controls");
 
     var snd = new Snd();
 
@@ -313,7 +314,7 @@ b4w.register("Majora_main", function (exports, require) {
         }
 
         objs.cam = m_scenes.get_object_by_name("camera");
-        objs.light_point= m_scenes.get_object_by_name("light_point");
+        objs.light_point = m_scenes.get_object_by_name("light_point");
         objs.light_point_back = m_scenes.get_object_by_name("light_point_back");
         // m_anim.apply(objs.light_point, "on", 0);
         // m_anim.play(objs.light_point, null, 0);
@@ -333,6 +334,8 @@ b4w.register("Majora_main", function (exports, require) {
         }, false);
         m_mouse.set_plock_smooth_factor(5);
 
+
+        registerMouse();
         // If success for load, play the INTRO sound
 
     }
@@ -344,6 +347,33 @@ b4w.register("Majora_main", function (exports, require) {
         m_cam.rotate_camera(objs.cam, rot_x * camera_rot_fact, rot_y * camera_rot_fact);
     }
 
+    function registerMouse() {
+        console.log("mouse registered");
+        var clickSensor = m_ctl.create_mouse_click_sensor();
+
+        function logic(triggers) {
+            if (triggers[0])
+                return 1;
+            else
+                return 0;
+        }
+
+        function cb(obj, id, pulse, param) {
+            if (pulse) {
+                introFadeIn();
+            }
+            console.log(pulse);
+            return;
+        };
+
+        m_ctl.create_sensor_manifold(null,
+            "mouse",
+            m_ctl.CT_TRIGGER, [clickSensor],
+            logic,
+            cb,
+        );
+    }
+
     function startBG() {
         snd.initBG();
         snd.bg.play();
@@ -351,6 +381,20 @@ b4w.register("Majora_main", function (exports, require) {
     }
 
     function introFadeIn(callback) {
+        m_scenes.set_dof_params({
+            dof_on: true
+        });
+        m_cam.target_set_horizontal_limits(objs.cam, {
+            left: -45,
+            right: 45
+        });
+        m_cam.target_set_vertical_limits(objs.cam, {
+            down: -45,
+            up: 45
+        });
+        m_cam.target_set_pivot_translation(objs.cam, [0.0, -4.30813, 2.55447]);
+
+
         m_time.animate(0, 1.4, 6000, function (v) {
             m_light.set_light_energy(objs.light_point, v);
         })
@@ -361,16 +405,21 @@ b4w.register("Majora_main", function (exports, require) {
                 god_rays_steps: 10
             });
         })
-        m_time.set_timeout(function () {
-            loggy("ANIM: Intro fade-in completed.");
-            callback();
-        }, 6000);
+        if (callback != null) {
+            m_time.set_timeout(function () {
+                loggy("ANIM: Intro fade-in completed.");
+                callback();
+            }, 6000);
+        }
     }
 
     function outroFadeIn(callback) {
-        m_scenes.set_dof_params({ dof_on: false });
+        m_scenes.set_dof_params({
+            dof_on: false
+        });
         m_cam.target_set_horizontal_limits(objs.cam, null);
         m_cam.target_set_vertical_limits(objs.cam, null);
+
         m_time.animate(0, 1.4, 6000, function (v) {
             m_light.set_light_energy(objs.light_point, v);
         })
@@ -378,10 +427,13 @@ b4w.register("Majora_main", function (exports, require) {
             m_light.set_light_energy(objs.light_point_back, v);
         })
 
-        m_time.set_timeout(function () {
-            loggy("ANIM: Outro fade-in completed.");
-            callback();
-        }, 6000);
+        if (callback != null) {
+            m_time.set_timeout(function () {
+                loggy("ANIM: Outro fade-in completed.");
+                callback();
+            }, 6000);
+        }
+
     }
 
     function introFadeOut() {
