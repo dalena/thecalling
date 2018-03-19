@@ -21,39 +21,54 @@ let prevTime = 0;
 let fpsInterval = 1000;
 
 /**
-* @type {Block[][]}
-*/
+ * @type {Block[][]}
+ */
 let blocks;
 
 /**
-* @type {Ripple[]}
-*/
+ * @type {Ripple[]}
+ */
 let ripples = [];
+var sketchCanvas;
 
 var canvasDiv = document.getElementById('myCanvas');
 // var width = document.getElementById('myCanvas').offsetWidth;
 // var height = document.getElementById('myCanvas').offsetHeight;
 function setup() {
 
-  var sketchCanvas = createCanvas(windowWidth, windowHeight);
+  var calcWidth = windowWidth - (windowWidth / 10)
+  var calcHeight = windowHeight - (windowWidth / 10)
+
+  sketchCanvas = createCanvas(calcWidth, calcHeight);
   sketchCanvas.parent("myCanvas");
-  sketchCanvas.position(0,0);
-  sketchCanvas.style('z-index','-1');
+  sketchCanvas.position(windowWidth / 20, windowWidth / 20);
+  sketchCanvas.style('z-index', '-1');
   noStroke();
   rectMode(CENTER);
   noSmooth();
 
+  initBlocks();
 
+}
+
+function initBlocks() {
   let padding_scale = 1;
   let top_padding = Math.round(width % block_size) * padding_scale;
   let left_padding = top_padding * 1;
   // let top_padding = Math.round(height % block_size) * 5;
 
-  blocks = Array.from({ length: Math.floor(height / block_size) }, (v, y) =>
-  Array.from({ length: Math.floor(width / block_size) }, (v, x) =>
-  new Block(left_padding + block_size * (x + 0.5), top_padding + block_size * (y + 0.5), y * Math.floor(width / block_size) + x)
-)
-);
+  // var border = width / 10;
+  var border = 0;
+
+  blocks = Array.from({
+      length: Math.floor((height - border) / block_size)
+    }, (v, y) =>
+    Array.from({
+        length: Math.floor((width - border) / block_size)
+      }, (v, x) =>
+      new Block((border / 2) + left_padding + block_size * (x + 0.5), (border / 2) + top_padding + block_size * (y + 0.5), y * Math.floor(width / block_size) + x)
+    )
+  );
 }
 
 
@@ -91,11 +106,11 @@ function draw() {
 
   noStroke();
   blocks.forEach((line, i) =>
-  line.forEach((block, j) => {
-    block.calcDiff(ripples);
-    block.render();
-  })
-);
+    line.forEach((block, j) => {
+      block.calcDiff(ripples);
+      block.render();
+    })
+  );
 
 }
 
@@ -116,8 +131,15 @@ function mouseDragged() {
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
 
+  var calcWidth = windowWidth - (windowWidth / 10)
+  var calcHeight = windowHeight - (windowWidth / 10)
+
+  resizeCanvas(calcWidth, calcHeight);
+  // sketchCanvas.parent("myCanvas");
+  sketchCanvas.position(windowWidth / 20, windowWidth / 20);
+  initBlocks()
+  // sketchCanvas.style('z-index', '-1');
 }
 
 class Block {
@@ -133,8 +155,8 @@ class Block {
   }
 
   /**
-  * @param {Ripple[]} ripples
-  */
+   * @param {Ripple[]} ripples
+   */
   calcDiff(ripples) {
     this.diff = createVector(0, 0);
     this.amp = 0;
