@@ -214,6 +214,7 @@ b4w.register("Majora_main", function (exports, require) {
     var m_anim = require("animation");
     var m_time = require("time");
     var m_ctl = require("controls");
+    var m_trns = require("transform");
 
     var snd = new Snd();
 
@@ -389,10 +390,10 @@ b4w.register("Majora_main", function (exports, require) {
             right: 45
         });
         m_cam.target_set_vertical_limits(objs.cam, {
-            down: -45,
-            up: 45
+            down: Math.PI/4,
+            up: -Math.PI/4
         });
-        m_cam.target_set_pivot_translation(objs.cam, [0.0, -4.30813, 2.55447]);
+        // m_trns.set_translation(objs.cam, 0.0, -4.30813, 2.55447);
 
 
         m_time.animate(0, 1.4, 6000, function (v) {
