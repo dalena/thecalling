@@ -6,21 +6,120 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Sevdaliza - The Calling</title>
   <link rel="stylesheet" type= "text/css" href="style2.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
 </head>
 <body>
-  <div class="grid-container">
-    <div class="item5">
-      <img src="assets/img/theCallingCover.png" width=600px alt="">
+  <div id="myCanvas">
+  </div>
+  <div id="parallax">
+    <div id= "img1" class="accent">
+      <img src="assets/img/eye1.png">
     </div>
-    <div class="item6">
-      <div id="titleAlbum">
-      </div>
+    <div id= "img2" class="accent">
+      <img src="assets/img/eye2.png">
     </div>
-    <script src="libraries/p5.js"></script>
-    <script src="libraries/p5.dom.js"></script>
-    <script src="sketch.js"></script>
-    <script src="libraries/blotter.js"></script>
-    <script src="libraries/materials/liquidDistortMaterial.js"></script>
-    <script src="titleAlbum.js"></script>
-  </body>
-  </html>
+    <div id= "img3" class="accent">
+      <img src="assets/img/eye3.png">
+    </div>
+  </div>
+  <div class="menu top right horizontal blue">
+         <input id="slide" name="slide" type="checkbox">
+         <label for="slide" class="icon open">
+             <i class="fa fa-bars"></i>
+         </label>
+
+         <nav role="navigation">
+             <ul>
+                 <li class="active">
+                 <a href="">
+                         <ul>
+                             <li><i class="fa">֎</i></li>
+                             <li><span>home</span></li>
+                         </ul>
+                     </a>
+                 </li>
+                 <li>
+                     <a href="#">
+                         <ul>
+                             <li><i class="fa">֎</i></li>
+                             <li><span>tour</span></li>
+                         </ul>
+                     </a>
+                 </li>
+                 <li>
+                     <a href="#">
+                         <ul>
+                             <li><i class="fa">֎</i></li>
+                             <li><span>releases</span></li>
+                         </ul>
+                     </a>
+                 </li>
+                    <li>
+                     <a href="#">
+                         <ul>
+                             <li><i class="fa">֎</i></li>
+                             <li><span>shop</span></li>
+                         </ul>
+                     </a>
+                 </li>
+                 <li>
+                     <a href="#">
+                         <ul>
+                             <li><i class="fa">֎</i></li>
+                             <li><span>connect</span></li>
+                         </ul>
+                     </a>
+                 </li>
+             </ul>
+         </nav>
+     </div>
+
+  <header>
+    <h1>SEVDALIZA</h1>
+  </header>
+  <div class="container">
+    <div class="wrapper">
+      <section class="hero">
+        <div id="titleAlbum">
+
+        </div>
+        <div class="date">
+          <h3>
+            28.03.2018
+          </h3>
+        </div>
+        <div class="CTA">
+          <a class="btn" href="#">listen</a>
+          <a class="btn" href="#">order</a>
+          <a class="btn" href="#">majora</a>
+          <!-- <div class="btn">listen</div>
+          <div class="btn">order</div>
+          <div class="btn">majora</div> -->
+        </div>
+      </section>
+      <section class="tour">
+        <h2>TOUR</h2>
+        <div id="tourBox">
+          <script src="https://cashmusic.org/public/cashmusic.js" data-element="13722"></script>
+        </div>
+      </section>
+      <footer>
+        <ul>
+          <li><a href="#" class="icon-1"><i class="fa fa-facebook"></i></a></li>
+          <li><a href="#" class="icon-2"><i class="fa fa-instagram"></i></a></li>
+          <li><a href="#" class="icon-3"><i class="fa fa-youtube"></i></a></li>
+          <li><a href="#" class="icon-4"><i class="fa fa-twitter"></i></a></li>
+          <li><a href="#" class="icon-5"><i class="fa fa-soundcloud"></i></a></li>
+        </ul>
+      </footer>
+    </div>
+  </div>
+  <script src="libraries/p5.js"></script>
+  <script src="libraries/p5.dom.js"></script>
+  <script src="sketch.js"></script>
+  <script src="libraries/blotter.js"></script>
+  <script src="libraries/materials/liquidDistortMaterial.js"></script>
+  <script src="titleAlbum.js"></script>
+
+</body>
+</html>

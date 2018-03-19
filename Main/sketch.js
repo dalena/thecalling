@@ -1,5 +1,5 @@
 const block_size = 25;
-const block_core = 1.8;
+const block_core = 1;
 const block_move_distance = 10;
 const block_move_range = 70;
 const block_scale = 0.02;
@@ -99,7 +99,7 @@ function draw() {
 
 function mouseMoved() {
   if (random() < pow(fps / 60, 3) * mouse_speed / 30) {
-    ripples.push(new Ripple(mouseX, mouseY, 0.15 * mouse_speed / 40));
+    ripples.push(new Ripple(mouseX, mouseY, 0.25 * mouse_speed / 40));
   }
 }
 

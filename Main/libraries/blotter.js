@@ -29433,8 +29433,11 @@ GrowingPacker.prototype = {
       },
 
       setSize : function (width, height) {
-        this._width = width || 1;
-        this._height = height || 1;
+        this._width = Math.floor(width) || 1;
+        this._height = Math.floor(height) || 1;
+        // this._width = width || 1;
+        // this._height = height || 1;
+        console.log(this._width, this._height);
 
         this._mesh.scale.set(this._width, this._height, 1);
 
