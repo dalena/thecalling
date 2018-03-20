@@ -15,14 +15,14 @@
 
   <div id="myCanvas"> </div>
 
-  <div id="parallax" class="rellax" data-rellax-speed="-10">
-    <div id="img1" class="accent">
+  <div id="parallax" class="rellax">
+    <div id="img1" class="accent" data-depth="0.6">
       <img class="bg-img" src="assets/img/eye1.png">
     </div>
-    <div id="img2" class="accent">
+    <div id="img2" class="accent" data-depth="0.6">
       <img class="bg-img" src="assets/img/eye2.png">
     </div>
-    <div id="img3" class="accent">
+    <div id="img3" class="accent" data-depth="0.6">
       <img class="bg-img" src="assets/img/eye3.png">
     </div>
   </div>
@@ -131,7 +131,7 @@
       <div id="trig2"></div>
       <section class="coverAlbum full-height vertical-align" id="pin2">
         <div style="width: 100%">
-          <img class="cover-img" src="assets/img/theCallingCover.jpg" alt="">
+          <img class="cover-img" id="tween" src="assets/img/theCallingCover.jpg" alt="">
         </div>
       </section>
       <section class="tour">
@@ -178,6 +178,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.4/TweenMax.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/animation.gsap.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
   <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/debug.addIndicators.min.js"></script> -->
   <script src="libs/p5.js"></script>
   <script src="libs/p5.dom.js"></script>
