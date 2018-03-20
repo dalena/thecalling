@@ -19,6 +19,7 @@ body {
     line-height: 1.5em;
     display: flex;
     justify-content: center;
+    overflow-x: hidden;
 }
 
 .distorted {
