@@ -1,0 +1,44 @@
+
+body {
+    font-family: 'Baskerville Old Face', 'Hoefler Text', 'Garamond', 'Times New Roman', serif;
+    color: #fff;
+    background: #000000;
+  }
+.full-height{
+    height: 100vh;
+}
+
+.vertical-align {
+    display: flex;
+    align-items: center;
+}
+
+.ontop{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.bg-img > img{
+    width: 100%;
+}
+
+.cover-album{
+    text-align: center;
+}
+
+.center{
+    text-align: center;
+}
+
+.btn-cstm {
+    display: inline-block;
+    margin: .5em;
+    background: #000000;
+    color: #ffffff;
+    font-size: 1em;
+    padding: .1em 1.8em;
+    border: 2px solid #ffffff;
+    text-decoration: none;
+  }

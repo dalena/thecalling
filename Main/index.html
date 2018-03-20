@@ -14,6 +14,7 @@
 <body>
 
   <div id="myCanvas"> </div>
+
   <div id="parallax" class="rellax" data-rellax-speed="-10">
     <div id="img1" class="accent">
       <img src="assets/img/eye1.png">
@@ -25,6 +26,7 @@
       <img src="assets/img/eye3.png">
     </div>
   </div>
+
   <div class="menu top right horizontal blue">
     <input id="slide" name="slide" type="checkbox">
     <label for="slide" class="icon open">
@@ -106,9 +108,10 @@
     <img class="pinAlbum" src="assets/img/theCallingCover.png" width="450">
   </div> -->
     <div class="wrapper" >
+        <div id="trig1"></div>
       <section class="hero" id="pin1">
         <!-- <h1 href="#" class="distorted">the CALLING</h1> -->
-        <video width="100%" height="auto" autoplay loop muted>
+        <video height="auto" id="title-vid" autoplay loop muted>
           <source src="assets/output2.webm" type='video/webm;codecs="vp8, vorbis"'>
         </video>
 
@@ -127,12 +130,10 @@
         <div class="btn">majora</div> -->
         </div>
       </section>
-      <div id="trigger1"></div>
-
-      <div id="trigger2"></div>
-      <section class="coverAlbum" id="pin2">
+      <div id="trig2"></div>
+      <section class="coverAlbum full-height vertical-align" id="pin2">
         <div>
-          <img src="assets/img/theCallingCover.jpg" alt="" width="500px">
+          <img src="assets/img/theCallingCover.jpg" alt="" width="50%">
         </div>
       </section>
       <section class="tour">
@@ -176,9 +177,10 @@
     </div>
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <!-- <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script> -->
-  <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/debug.addIndicators.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.4/TweenMax.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/animation.gsap.js"></script>
+  <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/debug.addIndicators.min.js"></script> -->
   <script src="libs/p5.js"></script>
   <script src="libs/p5.dom.js"></script>
   <script src="js/sketch.js"></script>

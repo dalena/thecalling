@@ -35,9 +35,22 @@ body {
   /* line-height: 50px; */
 }
 
+.full-height{
+  height: 100vh;
+}
+
+.vertical-align {
+  display: flex;
+  align-items: center;
+}
+
 img {
   max-width: 100%;
   height: auto;
+}
+
+video {
+  max-width: 100%;
 }
 
 h1 {
@@ -118,10 +131,13 @@ header {
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: 65vw;
+  width: 100%;
 }
 
 .wrapper {
   max-width: 65vw;
+  width: 100%;
 }
 
 .coverAlbum {
@@ -134,7 +150,10 @@ header {
 transform: translateY(100vh);
 transition: all 1s ease-out; */
   z-index: -1;
+  height: 100vh;
 }
+
+
 
 .hero {
   /* padding: 10vh 10vw; */
@@ -143,7 +162,7 @@ transition: all 1s ease-out; */
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100% !important
+  width: 100%;
 }
 
 #titleAlbum {
@@ -360,4 +379,3 @@ footer a:hover {
 }
 
 
-coverAlbum
