@@ -12,14 +12,14 @@ $(window).on('resize', function () {
 
 
 function initSceneTitle() {
-    var wipeAnimation = new TimelineMax()
-        .fromTo(".cover-img", 1, {
-            opacity: 0,
-            width: "0%"
-        }, {
-            opacity: 1,
-            width: "70%"
-        }, '0')
+    // var wipeAnimation = new TimelineMax()
+    //     .fromTo(".cover-img", 1, {
+    //         opacity: 0,
+    //         width: "0%"
+    //     }, {
+    //         opacity: 1,
+    //         width: "70%"
+    //     }, '0')
 
 
     sceneTitle = new ScrollMagic.Scene({
@@ -31,7 +31,7 @@ function initSceneTitle() {
             pushFollowers: false
             // y: "-100%",
         })
-        .setTween(wipeAnimation)
+        // .setTween(wipeAnimation)
         .on("enter", function (e) {
             $("#pin1").css("z-index", 9999);
             document.getElementById("title-vid").play();
