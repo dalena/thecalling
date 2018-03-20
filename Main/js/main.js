@@ -1,53 +1,65 @@
 var controller = new ScrollMagic.Controller();
 
-var scene1;
-var scene2;
+var sceneTitle;
+var sceneCover;
 
 $(window).on('resize', function () {
-    scene1.destroy(true);
-    scene2.destroy(true);
-    scene1 = createScene1();
-    scene2 = createScene2();
+    sceneTitle.destroy(true);
+    // sceneCover.destroy(true);
+    sceneTitle = initSceneTitle();
+    // sceneCover = initSceneCover();
 });
 
 
-function createScene1() {
-    scene1 = new ScrollMagic.Scene({
+function initSceneTitle() {
+    var wipeAnimation = new TimelineMax()
+        .fromTo(".cover-img", 1, {
+            opacity: 0,
+            width: "0%"
+        }, {
+            opacity: 1,
+            width: "70%"
+        }, '0')
+
+
+    sceneTitle = new ScrollMagic.Scene({
             triggerElement: "#trig1",
             triggerHook: "onLeave",
+            duration: "100%"
         })
         .setPin("#pin1", {
+            pushFollowers: false
             // y: "-100%",
         })
-        // .setTween(wipeAnimation)
+        .setTween(wipeAnimation)
         .on("enter", function (e) {
             $("#pin1").css("z-index", 9999);
             document.getElementById("title-vid").play();
-            // scene2.destroy(true);
         })
-        .addIndicators()
+        // .addIndicators()
         .addTo(controller);
-}
-createScene1();
 
-function createScene2() {
-    var wipeAnimation2 = new TimelineMax()
-        .fromTo("#pin1", 1, {
-            y: "0%"
-        }, {
-            y: "-100%",
-            ease: Linear.easeNone
-        })
-
-    scene2 = new ScrollMagic.Scene({
-            triggerElement: "#pin2",
-            triggerHook: "onLeave",
-            duration: "100%",
-            // offset: "100%"
-        })
-        .setPin("#pin2", {})
-        .setTween(wipeAnimation2)
-        .addIndicators()
-        .addTo(controller);
+    return sceneTitle;
 }
-createScene2();
+initSceneTitle();
+
+// function initSceneCover() {
+//     var halfHeight = window.innerHeight / 2;
+
+
+//     sceneCover = new ScrollMagic.Scene({
+//             triggerElement: "#pin2",
+//             triggerHook: "onLeave",
+//             duration: "100%",
+//             // offset: "100%"
+//         })
+//         .setPin("#pin2", {
+//             pushFollowers: true
+//         })
+//         .setTween(wipeAnimation)
+//         // .addIndicators()
+//         .addTo(controller);
+
+//     return sceneCover;
+// }
+// initSceneCover();
