@@ -8,11 +8,12 @@
   <title>Sevdaliza - The Calling</title>
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
 </head>
 
 <body>
-  <div id="myCanvas">
-  </div>
+
+  <div id="myCanvas"> </div>
   <div id="parallax" class="rellax" data-rellax-speed="-10">
     <div id="img1" class="accent">
       <img src="assets/img/eye1.png">
@@ -96,17 +97,22 @@
     </nav>
   </div>
 
-  <header>
+  <!-- <header>
     <h1>SEVDALIZA</h1>
-  </header>
+  </header> -->
+
   <div class="container">
     <!-- <div id="coverAlbum" class="rellax" data-rellax-speed="20">
     <img class="pinAlbum" src="assets/img/theCallingCover.png" width="450">
   </div> -->
-    <div class="wrapper">
-      <section class="hero">
-        <div id="titleAlbum">
-        </div>
+    <div class="wrapper" >
+      <section class="hero" id="pin1">
+        <!-- <h1 href="#" class="distorted">the CALLING</h1> -->
+        <video width="100%" height="auto" autoplay loop muted>
+          <source src="assets/output2.webm" type='video/webm;codecs="vp8, vorbis"'>
+        </video>
+
+        <div id="titleAlbum"></div>
         <div class="date">
           <h3>
             28.03.2018
@@ -120,9 +126,11 @@
         <div class="btn">order</div>
         <div class="btn">majora</div> -->
         </div>
-
       </section>
-      <section class="coverAlbum">
+      <div id="trigger1"></div>
+
+      <div id="trigger2"></div>
+      <section class="coverAlbum" id="pin2">
         <div>
           <img src="assets/img/theCallingCover.jpg" alt="" width="500px">
         </div>
@@ -167,15 +175,15 @@
       </section>
     </div>
   </div>
-  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   <!-- <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script> -->
-  <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.min.js"></script> -->
-  <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/debug.addIndicators.min.js"></script> -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/debug.addIndicators.min.js"></script>
   <script src="libs/p5.js"></script>
   <script src="libs/p5.dom.js"></script>
   <script src="js/sketch.js"></script>
-  <script src="libs/blotter.min.js"></script>
-  <script src="libs/materials/liquidDistortMaterial.js"></script>
+  <!-- <script src="libs/blotter.min.js"></script> -->
+  <!-- <script src="libs/materials/liquidDistortMaterial.js"></script> -->
   <script src="libs/rellax.min.js"></script>
   <script src="js/main.js"></script>
 
