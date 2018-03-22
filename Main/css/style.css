@@ -255,6 +255,9 @@ canvas.b-canvas {
   padding: .1em 1.8em;
   border: 2px solid #ffffff;
   text-decoration: none;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
 }
 
 .tour {
@@ -461,3 +464,7 @@ footer li {
   box-sizing: border-box;
 }
 
+.date > h3 {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 900;
+}
