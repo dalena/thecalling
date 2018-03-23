@@ -72,8 +72,8 @@ td {
 
 @font-face {
     font-family: astrodienst;
-    src: url(/css/fonts/adienst1606.eot);
-    src: url(/css/fonts/adienst1606.eot?#iefix) format('embedded-opentype'), url(/css/fonts/adienst1606.woff2) format('woff2'), url(/css/fonts/dienst1606.woff) format('woff'), url(/css/fonts/adienst1606.ttf) format('truetype'), url(/css/fonts/adienst1606.svg#astrodienst_1regular) format('svg');
+    src: url(./fonts/adienst1606.eot);
+    src: url(./fonts/adienst1606.eot?#iefix) format('embedded-opentype'), url(./fonts/adienst1606.woff2) format('woff2'), url(./fonts/dienst1606.woff) format('woff'), url(./fonts/adienst1606.ttf) format('truetype'), url(./fonts/adienst1606.svg#astrodienst_1regular) format('svg');
     font-weight: 400;
     font-style: normal
 }

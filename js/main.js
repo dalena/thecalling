@@ -131,7 +131,7 @@ if (!isMobile) {
         dropRadius: 500,
         perturbance: 0.05,
         interactive: false,
-        imageUrl: "/assets/img/canv-bg.jpg"
+        imageUrl: "../assets/img/canv-bg.jpg"
     });
 
     $(window).mousemove(drop);
