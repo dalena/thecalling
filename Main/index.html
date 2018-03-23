@@ -7,13 +7,17 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Sevdaliza - The Calling</title>
   <link rel="stylesheet" type="text/css" href="css/style.css">
-  <link href="https://fonts.googleapis.com/css?family=Raleway:700,900" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Serif|Raleway:700,900" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script> -->
 </head>
 
 <body>
+  <nav class="nav">
+    <a href="" class="top">Home</a>
+    <a href="" class="right">Shop</a>
+    <a href="" class="left">Releases</a>
+    <a href="" class="bottom">Tour</a>
+  </nav>
 
   <div id="myCanvas"> </div>
 
@@ -22,97 +26,19 @@
       <img class="bg-img" src="assets/img/eye1.png">
     </div>
     <div id="img2" class="accent" data-depth="0.6">
-      <img class="bg-img" src="assets/img/eye2.png">
-    </div>
-    <div id="img3" class="accent" data-depth="0.6">
       <img class="bg-img" src="assets/img/eye3.png">
     </div>
+    <!-- <div id="img3" class="accent" data-depth="0.6">
+      <img class="bg-img" src="assets/img/eye2.png">
+    </div> -->
   </div>
 
-  <div class="menu top right horizontal blue">
-    <input id="slide" name="slide" type="checkbox">
-    <label for="slide" class="icon open vertical-align">
-      <i class="fa fa-bars" style="margin: auto;"></i>
-    </label>
-
-    <nav role="navigation">
-      <ul>
-        <li class="active">
-          <a href="">
-            <ul>
-              <li>
-                <i class="fa">֎</i>
-              </li>
-              <li>
-                <span>home</span>
-              </li>
-            </ul>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <ul>
-              <li>
-                <i class="fa">֎</i>
-              </li>
-              <li>
-                <span>tour</span>
-              </li>
-            </ul>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <ul>
-              <li>
-                <i class="fa">֎</i>
-              </li>
-              <li>
-                <span>releases</span>
-              </li>
-            </ul>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <ul>
-              <li>
-                <i class="fa">֎</i>
-              </li>
-              <li>
-                <span>shop</span>
-              </li>
-            </ul>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <ul>
-              <li>
-                <i class="fa">֎</i>
-              </li>
-              <li>
-                <span>connect</span>
-              </li>
-            </ul>
-          </a>
-        </li>
-      </ul>
-    </nav>
-  </div>
-
-  <!-- <header>
-    <h1>SEVDALIZA</h1>
-  </header> -->
 
   <div class="container">
-    <!-- <div id="coverAlbum" class="rellax" data-rellax-speed="20">
-    <img class="pinAlbum" src="assets/img/theCallingCover.png" width="450">
-  </div> -->
     <div class="wrapper">
       <div id="trig1"></div>
+
       <section class="hero" id="pin1">
-        <!-- <h1 href="#" class="distorted">the CALLING</h1> -->
         <div id="titleAlbum">
           <video height="auto" id="title-vid" autoplay loop muted>
             <source src="assets/output2.webm" type='video/webm;codecs="vp8, vorbis"'>
@@ -120,31 +46,77 @@
         </div>
 
         <div class="date">
-          <h3>28.03.2018</h3>
+          <table>
+            <tbody id="appendTo">
+            </tbody>
+          </table>
         </div>
+
         <div id="trig2"></div>
+
         <div class="CTA">
-            <a class="btn" href="#">listen</a>
-            <a class="btn" href="#">order</a>
-            <a class="btn" href="#">majora</a>
+          <div class="social link-container">
+            <h2>LISTEN</h2>
+            <ul id="social-links">
+              <li>
+                <a target="blank" href="http://facebook.com/sevdalizamusic">Facebook</a>
+              </li>
+              <li>
+                <a target="blank" href="http://twitter.com/Sevdaliza">Twitter</a>
+              </li>
+              <li>
+                <a target="blank" href="https://www.instagram.com/sevdaliza_/">Instagram</a>
+              </li>
+              <li>
+                <a target="blank" href="http://youtube.com/sevdaliza">Youtube</a>
+              </li>
+            </ul>
           </div>
+          <div class="order link-container">
+            <h2 id="order-heading">ORDER</h2>
+
+            <ul id="order-links">
+              <li>
+                <a target="blank" href="https://www.youtube.com/watch?v=znV9KDsNtXY&amp;feature=youtu.be">Youtube</a>
+              </li>
+              <li>
+                <a target="blank" href="https://open.spotify.com/album/1QVdHImfz9bh1slzqUTsGF">Spotify</a>
+              </li>
+              <li>
+                <a target="blank" href="https://itunes.apple.com/us/album/ison/id1225257798">iTunes</a>
+              </li>
+              <li>
+                <a target="blank" href="https://listen.tidal.com/album/72641575">Tidal</a>
+              </li>
+            </ul>
+          </div>
+          <div class="majora link-container">
+            <h2>
+              <a target="blank" href="https://shop.sevdaliza.com">MAJORA</a>
+            </h2>
+            <ul id="majora-links">
+              <li>&nbsp;</li>
+              <li>&nbsp;</li>
+              <li>&nbsp;</li>
+              <li>&nbsp;</li>
+            </ul>
+          </div>
+        </div>
 
       </section>
-   
-     
+
       <section class="coverAlbum full-height vertical-align" id="pin2">
         <div style="width: 100%">
           <img class="cover-img" id="tween" src="assets/img/theCallingCover.jpg" alt="">
         </div>
       </section>
       <section class="tour">
-        <!-- <h2>TOUR</h2> -->
-        <div id="tourBox">
+        <div id="tourBox" class="">
           <a href="http://www.songkick.com/artists/5195363" class="songkick-widget" data-theme="dark" data-detect-style="false" data-font-color="#fff"
             data-font-size="1em" data-background-color="rgba(0, 0, 0, 0.5)"></a>
           <script src="//widget.songkick.com/widget.js"></script>
-          <!-- <script src="https://cashmusic.org/public/cashmusic.js" data-element="13722"></script> -->
         </div>
+
         <footer>
           <ul style="padding: 0; margin: 0;">
             <li>
@@ -177,19 +149,13 @@
       </section>
     </div>
   </div>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.4/TweenMax.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/animation.gsap.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
-  <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/debug.addIndicators.min.js"></script> -->
+  <script src="libs/jquery.min.js"></script>
+  <script src="libs/TweenMax.min.js"></script>
+  <script src="libs/ScrollMagic.js"></script>
+  <script src="libs/animation.gsap.js"></script>
+  <script src="libs/parallax.min.js"></script>
+  <!-- <script src="libs/debug.addIndicators.min.js"></script> -->
   <script src="libs/jquery.ripples-min.js"></script>
-  <!-- <script src="libs/p5.js"></script> -->
-  <!-- <script src="libs/p5.dom.js"></script> -->
-  <!-- <script src="js/sketch.js"></script> -->
-  <!-- <script src="libs/blotter.min.js"></script> -->
-  <!-- <script src="libs/materials/liquidDistortMaterial.js"></script> -->
-  <!-- <script src="libs/rellax.min.js"></script> -->
   <script src="js/main.js"></script>
 
 </body>

@@ -18,14 +18,19 @@ var sceneCover;
 
 $(window).on('resize', function () {
     sceneTitle.destroy(true);
-    // sceneCover.destroy(true);
     sceneTitle = initSceneTitle();
-    // sceneCover = initSceneCover();
 });
 
 
 function initSceneTitle() {
     var wipeAnimation = new TimelineMax()
+        .fromTo("table", 1, {
+            backgroundColor: "rgba(255,255,255,0)",
+            color: "#fff",
+        }, {
+            backgroundColor: "rgba(255,255,255, 1)",
+            color: "#000",
+        }, '0')
         .fromTo(".cover-img", 1, {
             opacity: 0,
             width: "30%"
@@ -33,12 +38,22 @@ function initSceneTitle() {
             opacity: 1,
             width: "70%"
         }, '0')
-        .fromTo(".btn", 1, {
+        .fromTo(".link-container>h2", 1, {
             backgroundColor: "#000",
             color: "#fff",
         }, {
             color: "#000",
             backgroundColor: "#fff",
+        }, '0')
+        .fromTo(".link-container>ul", 1, {
+            backgroundColor: "#000",
+        }, {
+            backgroundColor: "#fff",
+        }, '0')
+        .fromTo(".link-container>ul>li>a", 1, {
+            color: "#fff",
+        }, {
+            color: "#000",
         }, '0')
 
 
@@ -49,86 +64,66 @@ function initSceneTitle() {
         })
         .setPin("#pin1", {
             pushFollowers: false
-            // y: "-100%",
         })
         .setTween(wipeAnimation)
         .on("enter", function (e) {
-            $("#pin1").css("z-index", 9999);
+            $("#pin1").css("z-index", 999);
             document.getElementById("title-vid").play();
         })
-        // .on("end", function (e) {
-        //     var w = $(".cover-img").width()
-        //     w = Math.floor(w)
-        //     var h = $(".cover-img").height()
-        //     h = Math.floor(h)
-        //     var top = $(".cover-img").position().top
-        //     top = Math.floor(top)
-        //     var left = $(".cover-img").offset().left
-        //     left = Math.floor(left)
-
-        //     for (var y = 0; y < 50; y += 5) {
-        //         $("#myCanvas").ripples('drop', left + w / 2, top + h / 2, 50, 0.01)
-        //     }
-
-        //     for (var y = top; y < h; y+=5) {
-        //         $("#myCanvas").ripples('drop', left+w, y, 20, 0.01)
-        //     }
-
-        //     for (var x = left; x < left+w; x+=5) {
-        //         $("#myCanvas").ripples('drop', x, top+h, 20, 0.01)
-        //     }
-
-        //     for (var x = left; x < left+w; x+=5) {
-        //         $("#myCanvas").ripples('drop', x, top, 20, 0.01)
-        //     }
-        // })
-        // .addIndicators()
-        .addTo(controller);
+        .addTo(controller)
+    // .addIndicators();
 
     return sceneTitle;
 }
+
+function ephemeris() {
+    var cors_api_url = '//sevda-ephemeris.herokuapp.com/?url=';
+
+    function doCORSRequest(options, printResult) {
+        var x = new XMLHttpRequest();
+        x.open(options.method, cors_api_url + options.url);
+        x.onload = x.onerror = function () {
+            printResult(
+                options.method + ' ' + options.url + '\n' +
+                x.status + ' ' + x.statusText + '\n\n' +
+                (x.responseText || '')
+            );
+        };
+        if (/^POST/i.test(options.method)) {
+            x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        }
+        x.send(options.data);
+    }
+
+    doCORSRequest({
+        method: 'GET',
+        url: "https://www.astro.com/h/pl_e.htm",
+        data: ""
+    }, function printResult(result) {
+        var lines = result.split('<div id="colmainleft2">');
+        lines.splice(0, 1);
+        result = lines[0]
+        var lines = result.split('</table>');
+        result = lines[0] + "</table>"
+        var newtext = lines.join('\n');
+
+        var dom_nodes = $($.parseHTML(result));
+        var tableRow = $(dom_nodes).find('tr').filter(function () {
+            var moon = $(this).text().toLowerCase().includes("sun");
+            var sun = $(this).text().toLowerCase().includes("moon");
+            return sun || moon;
+        });
+        $("#appendTo").append(tableRow);
+    });
+}
+
 initSceneTitle();
+ephemeris();
 
-    sceneCover = new ScrollMagic.Scene({
-            triggerElement: "#trig2",
-            triggerHook: "onLeave",
-            // duration: "100%",
-            // offset: "100%"
-        })
-        .setPin(".CTA", {
-            pushFollowers: false
-        })
-        // .setTween(wipeAnimation)
-        // .addIndicators()
-        .addTo(controller);
-
-
-// function initSceneCover() {
-//     var halfHeight = window.innerHeight / 2;
-
-
-//     sceneCover = new ScrollMagic.Scene({
-//             triggerElement: "#pin2",
-//             triggerHook: "onLeave",
-//             duration: "100%",
-//             // offset: "100%"
-//         })
-//         .setPin("#pin2", {
-//             pushFollowers: true
-//         })
-//         .setTween(wipeAnimation)
-//         // .addIndicators()
-//         .addTo(controller);
-
-//     return sceneCover;
-// }
-// initSceneCover();
 
 if (!isMobile) {
     function drop(event) {
         $("#myCanvas").ripples('drop', event.clientX, event.clientY, 20, 0.01)
-        // console.log(event)
-        // console.log(event.offsetX, event.offsetY)
     }
 
     $('#myCanvas').ripples({
