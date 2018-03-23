@@ -162,7 +162,7 @@ if (!isMobile) {
     $("#myCanvas").ripples('drop', event.clientX, event.clientY, 20, 0.01)
   }
 
-var imageURL = "./assets/img/canv-bg-2.jpg"
+var imageURL = "./assets/img/canv-bg-1.jpg"
 
  if (getUrlParameter('random') == "true"){
    imageURL = "https://picsum.photos/g/1024?random"
