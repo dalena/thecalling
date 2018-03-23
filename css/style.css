@@ -585,8 +585,8 @@ p {
   z-index: -2;
   background-size: cover;
   background-position: center center;
-  -webkit-filter: brightness(2);
-  filter: brightness(2);
+  /* -webkit-filter: brightness(2);
+  filter: brightness(2); */
 }
 
 #parallax {
@@ -618,7 +618,7 @@ p {
 
 #img3 {
   position: relative !important;
-  grid-row: 4/4;
+  grid-row: 5/5;
   grid-column: 1 / 2;
 }
 
