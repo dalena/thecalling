@@ -1,23 +1,91 @@
 "use strict"
 
-console.style('<img="background:url(https://static1.squarespace.com/static/523950d1e4b0eacf372043db/t/5583208ae4b0dd6ca1a4b945/1434656921780/);width:250px;height:250px">');
-
 var glopts = {
-    "sourceRepo": "https://github.com/dalena/thecalling",
-    "redirect": true,
-    "redir_seconds": 10,
-    "sound_count": 28,
+    sourceRepo: "https://github.com/dalena/thecalling",
+    redirect: true,
+    redir_seconds: 10,
+    sound_count: 28,
+    consoleImage: "https://static1.squarespace.com/static/523950d1e4b0eacf372043db/t/5583208ae4b0dd6ca1a4b945/1434656921780/"
 }
 
-function loggy(str) {
-    console.style('<b="font-size:14px;color:red;">[M]|</b> ' + str);
+function loggy(mode, str) {
+    var color = "";
+    var text = "";
+    switch (mode) {
+        case "anim":
+            color = "green";
+            text = "ANIM:";
+            break;
+        case "audio":
+            color = "orange";
+            text = "AUDIO:";
+            break;
+        case "app":
+            color = "blue";
+            text = "APP:";
+            break;
+        case "flow":
+            color = "purple";
+            text = "FLOW:";
+            break;
+        default:
+            color = "red";
+    }
+
+    if (mode && str)
+        console.style('<b="font-size:14px;color:red;">Majora |</b> ' + '<b="font-size:14px;color:' + color + ';">' + text + '</b> ' + str);
+    else if (mode)
+        console.style('<b="font-size:14px;color:red;">Majora |</b> ' + mode);
+    else
+        console.style('<img="background:url(' + glopts.consoleImage + ');width:250px;height:250px">');
+
+}
+
+function Utils() {
+    this.getUrlParameter = function (sParam) {
+        var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : sParameterName[1];
+            }
+        }
+    };
+
+    this.handleVisibilityChange = function (callback) {
+        // Set the name of the hidden property and the change event for visibility
+        var hidden, visibilityChange;
+        if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support 
+            hidden = "hidden";
+            visibilityChange = "visibilitychange";
+        } else if (typeof document.msHidden !== "undefined") {
+            hidden = "msHidden";
+            visibilityChange = "msvisibilitychange";
+        } else if (typeof document.webkitHidden !== "undefined") {
+            hidden = "webkitHidden";
+            visibilityChange = "webkitvisibilitychange";
+        }
+
+        // Warn if the browser doesn't support addEventListener or the Page Visibility API
+        if (typeof document.addEventListener === "undefined" || typeof document.hidden === "undefined") {
+            console.log("This demo requires a browser, such as Google Chrome or Firefox, that supports the Page Visibility API.");
+        } else {
+            // Handle page visibility change   
+            document.addEventListener(visibilityChange, callback, false);
+        }
+    };
 }
 
 function Snd(type) {
     this.fftSize = 512;
     this.smoothingTimeConstant = 1.0;
 
-    this.graph = true;
+    this.graph = false;
 
     this.bg = undefined;
     this.intro = undefined;
@@ -97,7 +165,7 @@ function Snd(type) {
         this.analyser = analyser;
         this.buffer = buffer;
         this.isPrepared = true;
-        loggy("SOUND: Prepared.");
+        loggy("audio", "Sound prepared.");
         this.graph && this.addGraph();
     }
 
@@ -134,7 +202,7 @@ function Snd(type) {
     this.avgRMS = function (val, rmsArr, rmsArrLimit) {
         rmsArr.push(val);
         if (rmsArr.length == rmsArrLimit)
-            loggy("SOUND: Mean buffer filled.");
+            loggy("audio", "Mean buffer filled.");
         if (rmsArr.length > rmsArrLimit) {
             rmsArr.shift();
             this.avgFilled = true;
@@ -197,64 +265,75 @@ function Snd(type) {
 
 // register the application module
 b4w.register("Majora_main", function (exports, require) {
-
     // MODULES
-    var m_app = require("app");
-    var m_main = require("main");
-    var m_light = require("lights");
-    var m_cfg = require("config");
-    var m_data = require("data");
-    var m_preloader = require("preloader");
-    var m_ver = require("version");
-    var m_gryo = require("gyroscope");
-    var m_cont = require("container");
-    var m_mouse = require("mouse");
-    var m_cam = require("camera");
-    var m_scenes = require("scenes");
-    var m_anim = require("animation");
-    var m_time = require("time");
-    var m_ctl = require("controls");
-    var m_trns = require("transform");
+    var m = {
+        app: require("app"),
+        main: require("main"),
+        light: require("lights"),
+        cfg: require("config"),
+        data: require("data"),
+        preloader: require("preloader"),
+        ver: require("version"),
+        gryo: require("gyroscope"),
+        cont: require("container"),
+        mouse: require("mouse"),
+        cam: require("camera"),
+        scenes: require("scenes"),
+        anim: require("animation"),
+        time: require("time"),
+        ctl: require("controls"),
+        trns: require("transform"),
+    };
 
     var snd = new Snd();
+    var utils = new Utils();
 
     // EXPORTS
+    exports.mods = m;
     exports.init = init;
-    exports.webgl_failed = webgl_failed
+    exports.webglFailed = webglFailed
     exports.snd = snd;
+    exports.utils = utils;
 
     // APP MODE
-    var DEBUG = (m_ver.type() == "DEBUG");
+    var DEBUG = (m.ver.type() == "DEBUG");
+    var VERBOSE = false;
 
     // DETECT ASSETS PATH
-    var APP_ASSETS_PATH = m_cfg.get_assets_path("Majora");
+    var APP_ASSETS_PATH = m.cfg.get_assets_path("Majora");
     var APP_ASSETS_PATH = "./assets/";
-    console.log(APP_ASSETS_PATH)
 
     function init() {
+        loggy();
+        loggy("The curious shall be rewarded.");
         loggy("Source available at: " + glopts.sourceRepo);
+        // if (flags.mobile) {
+        //     loggy("app", "Mobile detected.");
+        //     m.cfg.set("quality", m.cfg.P_LOW)
+        //     loggy("app", "Quality set to low");
+        // }
 
         if (true)
-            m_app.init({
+            m.app.init({
                 canvas_container_id: "main_canvas_container",
-                callback: init_cb,
-                show_fps: DEBUG,
-                console_verbose: DEBUG,
+                callback: initCallback,
+                show_fps: VERBOSE,
+                show_hud_debug_info: VERBOSE,
+                min_capabilities: false,
+                debug_loading: VERBOSE,
+                console_verbose: VERBOSE,
                 autoresize: true,
-                report_init_failure: false
+                report_init_failure: false,
+                pause_invisible: true
                 // assets_gzip_available: true
             });
     }
 
-    function init_cb(canvas_elem, success) {
-
+    function initCallback(canvas_elem, success) {
         if (!success) {
-            webgl_failed();
+            webglFailed();
             return;
         }
-
-        // Start BACKGROUND theme sound
-        startBG();
 
         $('#preloader_cont').css('visibility', 'visible');
         $('#preloader_cont').removeClass('opacity-zero');
@@ -268,13 +347,16 @@ b4w.register("Majora_main", function (exports, require) {
         };
 
         load();
+
+        // Start BACKGROUND theme sound
+        audioBGStart();
     }
 
     function load() {
-        m_data.load(APP_ASSETS_PATH + "Majora.json", load_cb, preloader_cb);
+        m.data.load(APP_ASSETS_PATH + "Majora.json", loadCallback, preloaderCallback);
     }
 
-    function preloader_cb(percentage) {
+    function preloaderCallback(percentage) {
         $('#prelod_dynamic_path').css('width', percentage + "%");
         if (percentage == 100) {
             $('#preloader_cont').removeClass('opacity-full');
@@ -286,73 +368,116 @@ b4w.register("Majora_main", function (exports, require) {
         }
     }
 
-    function render_cb() {
+    var energy
+
+    function renderCallback() {
         snd.rmsArrLimit = 64;
         snd.analyze();
 
-        var lamps = m_light.get_lamps();
-        var energy = snd.stats.rmsSmoothScaled;
+        energy = snd.stats.rmsSmoothScaled;
 
-        if (snd.avgFilled && !snd.introEnd && energy > 0.7) {
-            m_light.set_light_energy(objs.light_point, energy * 2);
-            // m_light.set_light_energy(objs.light_point, 0);
-        }
+        if (snd.avgFilled && !snd.introEnd && energy > 0.7)
+            m.light.set_light_energy(objs.light_point, energy * 2);
     }
-
 
     var objs = {
         cam: undefined,
         light_point: undefined,
         light_point_back: undefined
     };
+    exports.objs = objs;
+
+    var timeouts = {
+
+    };
+    exports.timeouts = timeouts;
 
     var flags = {
-
+        playing: "init",
+        mobile: m.main.detect_mobile(),
+        allowToggle: false,
+        godRays: true,
+        isPageVisible: true,
     }
+    exports.flags = flags;
 
-    function load_cb(data_id, success) {
+    function loadCallback(data_id, success) {
         if (!success) {
-            loggy("Loading failed.");
+            loggy("app", "Loading failed.");
             return;
         }
 
-        objs.cam = m_scenes.get_object_by_name("camera");
-        objs.light_point = m_scenes.get_object_by_name("light_point");
-        objs.light_point_back = m_scenes.get_object_by_name("light_point_back");
-        // m_anim.apply(objs.light_point, "on", 0);
-        // m_anim.play(objs.light_point, null, 0);
+        utils.handleVisibilityChange(function () {
+            flags.isPageVisible = !m.main.is_paused();
 
-        introFadeIn(startIntro);
+            if (flags.isPageVisible && typeof snd.bg == 'object') {
+                snd.bg.play();
+            }
+            if (flags.isPageVisible && typeof snd.intro == 'object') {
+                if (snd.introPlay && !snd.introEnd)
+                    snd.intro.play();
+            }
+            if (flags.isPageVisible && typeof snd.outro == 'object') {
+                if (snd.outroPlay && !snd.outroEnd)
+                    snd.outro.play();
+            }
+            if (!flags.isPageVisible && typeof snd.bg == 'object') {
+                snd.bg.pause();
+            }
+            if (!flags.isPageVisible && typeof snd.intro == 'object') {
+                if (snd.introPlay && !snd.introEnd)
+                    snd.intro.pause();
+            }
+            if (!flags.isPageVisible && typeof snd.outro == 'object') {
+                if (snd.outroPlay && !snd.outroEnd)
+                    snd.outro.pause();
+            }
 
-        // camera = m_scene.get_active_camera();
+            document.title = flags.isPageVisible ? "Majora" : "❚❚ Majora";
+        })
 
-        m_main.set_render_callback(render_cb);
 
-        m_app.enable_camera_controls();
-        m_gryo.enable_camera_rotation();
-
-        var canvas_elem = m_cont.get_canvas();
-        canvas_elem.addEventListener("mouseup", function (e) {
-            m_mouse.request_pointerlock(canvas_elem, null, null, null, null, rot_cb);
-        }, false);
-        m_mouse.set_plock_smooth_factor(5);
-
+        objs.cam = m.scenes.get_object_by_name("camera");
+        objs.light_point = m.scenes.get_object_by_name("light_point");
+        objs.light_point_back = m.scenes.get_object_by_name("light_point_back");
+        // m.anim.apply(objs.light_point, "on", 0);
+        // m.anim.play(objs.light_point, null, 0);
 
         registerMouse();
-        // If success for load, play the INTRO sound
 
+        // camera = m.scene.get_active_camera();
+
+        m.main.set_render_callback(renderCallback);
+
+        m.app.enable_camera_controls();
+        m.gryo.enable_camera_rotation();
+
+        var canvas_elem = m.cont.get_canvas();
+        canvas_elem.addEventListener("mouseup", function (e) {
+            m.mouse.request_pointerlock(canvas_elem, null, null, null, null, rot_cb);
+        }, false);
+        m.mouse.set_plock_smooth_factor(5);
+
+        // If success for load, play the INTRO sound
+        m.time.set_timeout(function () {
+            animIntroFadeIn();
+            m.cam.rotate_camera(majora.objs.cam, 0, 0, true)
+        }, 2000)
+
+        timeouts.loadCallback = m.time.set_timeout(function () {
+            audioIntroStart();
+        }, 6000);
     }
 
     var camera_smooth_fact = 2;
     var camera_rot_fact = 5;
 
     function rot_cb(rot_x, rot_y) {
-        m_cam.rotate_camera(objs.cam, rot_x * camera_rot_fact, rot_y * camera_rot_fact);
+        m.cam.rotate_camera(objs.cam, rot_x * camera_rot_fact, rot_y * camera_rot_fact);
     }
 
     function registerMouse() {
-        console.log("mouse registered");
-        var clickSensor = m_ctl.create_mouse_click_sensor();
+        var clickSensor = m.ctl.create_mouse_click_sensor();
 
         function logic(triggers) {
             if (triggers[0])
@@ -362,151 +487,253 @@ b4w.register("Majora_main", function (exports, require) {
         }
 
         function cb(obj, id, pulse, param) {
-            if (pulse) {
-                introFadeIn();
+            if (pulse == 1) {
+                toggleScenes()
             }
-            console.log(pulse);
             return;
         };
 
-        m_ctl.create_sensor_manifold(null,
+        m.ctl.create_sensor_manifold(null,
             "mouse",
-            m_ctl.CT_TRIGGER, [clickSensor],
+            m.ctl.CT_TRIGGER, [clickSensor],
             logic,
             cb,
         );
+
+        loggy("app", "Mouse registered.")
     }
 
-    function startBG() {
+    function toggleScenes() {
+        if (flags.allowToggle) {
+            loggy("app", "Scene toggled.")
+            if (flags.playing == "outro")
+                animIntroFadeIn();
+            else if (flags.playing == "intro")
+                animOutroFadeIn();
+        }
+    }
+    exports.toggleScenes = toggleScenes
+
+    function audioBGStart() {
         snd.initBG();
         snd.bg.play();
         snd.bg.fade(0, 0.3, 6000);
     }
 
-    function introFadeIn(callback) {
-        m_scenes.set_dof_params({
-            dof_on: true
-        });
-        m_cam.target_set_horizontal_limits(objs.cam, {
-            left: -45,
-            right: 45
-        });
-        m_cam.target_set_vertical_limits(objs.cam, {
-            down: Math.PI/4,
-            up: -Math.PI/4
-        });
-        // m_trns.set_translation(objs.cam, 0.0, -4.30813, 2.55447);
-
-
-        m_time.animate(0, 1.4, 6000, function (v) {
-            m_light.set_light_energy(objs.light_point, v);
-        })
-        m_time.animate(0, 1, 6000, function (v) {
-            m_scenes.set_god_rays_params({
-                god_rays_max_ray_length: 2,
-                god_rays_intensity: v,
-                god_rays_steps: 10
-            });
-        })
-        if (callback != null) {
-            m_time.set_timeout(function () {
-                loggy("ANIM: Intro fade-in completed.");
-                callback();
-            }, 6000);
-        }
-    }
-
-    function outroFadeIn(callback) {
-        m_scenes.set_dof_params({
-            dof_on: false
-        });
-        m_cam.target_set_horizontal_limits(objs.cam, null);
-        m_cam.target_set_vertical_limits(objs.cam, null);
-
-        m_time.animate(0, 1.4, 6000, function (v) {
-            m_light.set_light_energy(objs.light_point, v);
-        })
-        m_time.animate(0, 1.4, 6000, function (v) {
-            m_light.set_light_energy(objs.light_point_back, v);
-        })
-
-        if (callback != null) {
-            m_time.set_timeout(function () {
-                loggy("ANIM: Outro fade-in completed.");
-                callback();
-            }, 6000);
-        }
-
-    }
-
-    function introFadeOut() {
-        m_time.animate(1.4, 0, 6000, function (v) {
-            m_light.set_light_energy(objs.light_point, v);
-        })
-        m_time.animate(1, 0, 6000, function (v) {
-            m_scenes.set_god_rays_params({
-                god_rays_max_ray_length: 2,
-                god_rays_intensity: v,
-                god_rays_steps: 10
-            });
-        })
-        m_time.set_timeout(function () {
-            loggy("ANIM: Fade-out completed.")
-            m_scenes.hide_object(m_scenes.get_object_by_name("hide"))
-            m_scenes.hide_object(m_scenes.get_object_by_name("eye_left"))
-            m_scenes.hide_object(m_scenes.get_object_by_name("eye_right"))
-            m_scenes.show_object(m_scenes.get_object_by_name("crystal"))
-            outroFadeIn(startOutro);
-        }, 6000);
-    }
-
-
-    function startIntro() {
+    function audioIntroStart() {
         snd.initIntro();
         snd.intro.play();
         snd.intro.once('play', function () {
+            loggy("audio", "Intro played.");
             snd.introPlay = true;
-            loggy("AUDIO: Intro played.");
-
             snd.prepare()
         });
         snd.intro.fade(0, 0.5, 6000);
         snd.intro.once('fade', function () {
+            loggy("audio", "Intro fade-in completed.");
             snd.introFade = true;
-            loggy("AUDIO: Intro fade-in completed.");
         });
         snd.intro.once('end', function () {
+            loggy("audio", "Intro ended.");
             snd.introEnd = true;
-            loggy("AUDIO: Intro ended.");
-
-            endIntro();
+            audioIntroEnd();
         });
     }
 
-    function endIntro() {
-        introFadeOut()
-    }
-
-    function startOutro() {
+    function audioOutroStart() {
         snd.initOutro();
         snd.outro.play();
         snd.outro.once('play', function () {
+            loggy("audio", "Outro played.");
             snd.outroPlay = true;
-            loggy("AUDIO: Outro played.");
         });
         snd.outro.fade(0, 0.5, 6000);
         snd.outro.once('fade', function () {
+            loggy("audio", "Outro fade-in completed.");
             snd.introFade = true;
-            loggy("AUDIO: Outro fade-in completed.");
         });
         snd.outro.once('end', function () {
+            loggy("audio", "Outro ended.");
             snd.outroEnd = true;
-            loggy("AUDIO: Outro ended.");
+            flags.allowToggle = true
+            loggy("app", "Toggle enabled");
+
+            $('#footer').removeClass('opacity-zero');
+            $('#footer').addClass('opacity-full');
         });
     }
 
-    function webgl_failed() {
-        loggy("WebGL initialization failed.");
+    function audioIntroEnd() {
+        animIntroFadeOut()
+        m.time.set_timeout(function () {
+            formTrigger("show");
+        }, 6000)
+    }
+
+    function formSubmitted() {
+        timeouts.audioIntroEnd = m.time.set_timeout(function () {
+            animOutroFadeIn();
+
+            timeouts.audioIntroEnd2 = m.time.set_timeout(function () {
+                audioOutroStart();
+            }, 6000);
+
+        }, 6000);
+    }
+
+    function setCameraLimits(cam, opts) {
+        if (opts != null) {
+            m.cam.target_set_horizontal_limits(cam, {
+                left: opts.left,
+                right: opts.right
+            });
+            m.cam.target_set_vertical_limits(cam, {
+                up: opts.up,
+                down: opts.down
+            });
+        } else {
+            m.cam.target_set_horizontal_limits(cam, null);
+            m.cam.target_set_vertical_limits(cam, null);
+        }
+    }
+
+    function setDOF(bool) {
+        if (!flags.mobile)
+            m.scenes.set_dof_params({
+                dof_on: bool
+            });
+    }
+
+    function setGodRays(opts) {
+        if (flags.mobile)
+            return
+
+        m.time.animate(opts.from, opts.to, opts.duration, function (v) {
+            m.scenes.set_god_rays_params({
+                god_rays_max_ray_length: opts.maxLength == "animated" ? v : opts.maxLength,
+                god_rays_intensity: opts.intensity == "animated" ? (v * flags.godRays) : opts.intensity,
+                god_rays_steps: opts.steps == "animated" ? v : opts.steps
+            });
+        })
+    }
+
+    function setLights(opts) {
+        m.time.animate(opts.from, opts.to, opts.duration, function (v) {
+            m.light.set_light_energy(objs.light_point, v);
+            if (opts.both)
+                m.light.set_light_energy(objs.light_point_back, v);
+            else
+                m.light.set_light_energy(objs.light_point_back, 0);
+
+        })
+    }
+
+    function toggleObjects(flag) {
+        var func1 = m.scenes.show_object;
+        var func2 = m.scenes.hide_object;
+        if (flag == "crystal") {
+            func1 = m.scenes.hide_object;
+            func2 = m.scenes.show_object;
+        }
+        func1(m.scenes.get_object_by_name("hide"))
+        func1(m.scenes.get_object_by_name("eye_left"))
+        func1(m.scenes.get_object_by_name("eye_right"))
+        func2(m.scenes.get_object_by_name("crystal"))
+    }
+    exports.toggleObjects = toggleObjects
+
+    function animIntroFadeIn(callback) {
+        loggy("anim", "Intro fade-in started.");
+
+        m.time.clear_timeout(timeouts.animOutroFadeIn);
+
+        flags.playing = "intro";
+        toggleObjects("head");
+
+        setDOF(true);
+
+        setCameraLimits(objs.cam, {
+            left: -45,
+            right: 45,
+            up: -Math.PI / 4,
+            down: Math.PI / 4
+        })
+
+
+        setLights({
+            from: 0,
+            to: 1,
+            duration: 6000,
+        })
+
+        flags.godRays = true;
+        setGodRays({
+            from: 0,
+            to: 1,
+            duration: 6000,
+            maxLength: 2,
+            intensity: "animated",
+            steps: 10
+        })
+
+        timeouts.animIntroFadeIn = m.time.set_timeout(function () {
+            loggy("anim", "Intro fade-in completed.");
+            if (callback != null)
+                callback();
+        }, 6000);
+
+    }
+    exports.animIntroFadeIn = animIntroFadeIn
+
+    function animIntroFadeOut() {
+        loggy("anim", "Intro fade-out started.")
+        setLights({
+            from: 1.4,
+            to: 0,
+            duration: 6000,
+        })
+
+        setGodRays({
+            from: 1,
+            to: 0,
+            duration: 6000,
+            maxLength: 2,
+            intensity: "animated",
+            steps: 10
+        })
+
+        timeouts.animIntroFadeOut = m.time.set_timeout(function () {
+            loggy("anim", "Intro fade-out completed.")
+        }, 6000);
+    }
+    exports.animIntroFadeOut = animIntroFadeOut
+
+    function animOutroFadeIn(callback) {
+        m.time.clear_timeout(timeouts.animIntroFadeIn);
+        loggy("anim", "Outro fade-in started.");
+        flags.playing = "outro";
+        toggleObjects("crystal");
+
+        setCameraLimits(objs.cam, null);
+        setDOF(false);
+
+        setLights({
+            both: true,
+            from: 0,
+            to: 1.4,
+            duration: 6000,
+        })
+
+        flags.godRays = false;
+
+        timeouts.animOutroFadeIn = m.time.set_timeout(function () {
+            loggy("anim", "Outro fade-in completed.");
+        }, 6000);
+    }
+    exports.animOutroFadeIn = animOutroFadeIn
+
+    function webglFailed() {
+        loggy("app", "WebGL initialization failed.");
 
         $('#main_canvas_container').remove();
         $('#webgl-fail').removeClass('opacity-zero');
@@ -524,7 +751,66 @@ b4w.register("Majora_main", function (exports, require) {
         var cancel = setInterval(incrementSeconds, 1000);
     }
 
+    function formTrigger(flag) {
+        if (flag == "show") {
+            loggy("app", "Form displayed.");
+            $('#form-container').removeClass('opacity-zero');
+            $('#form-container').addClass('opacity-full');
+        } else if (flag == "hide") {
+            loggy("app", "Form hide.");
+            $('#form-container').addClass('opacity-zero');
+            $('#form-container').removeClass('opacity-full');
+            formSubmitted();
+        }
+    }
+    exports.formTrigger = formTrigger
+
 });
 
 var majora = b4w.require("Majora_main");
 majora.init();
+
+$(document).ready(function () {
+    $.getJSON("./assets/country-calling-codes.min.json", function (obj) {
+        $.each(obj, function (key, value) {
+            var text = value.name + ' (+' + value.callingCode + ')'
+            $("#countries").append('<option value="' + text + '">' + text + "</option>");
+        });
+    });
+
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function (form) {
+        form.addEventListener('submit', function (event) {
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                var url = $(".needs-validation").prop('action'); // the script where you handle the form input.
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    data: $(".needs-validation").serialize(), // serializes the form's elements.
+                    cache: false,
+                    dataType: 'jsonp',
+                    contentType: "application/json; charset=utf-8",
+                    error: function (err) {
+                        loggy("app", "Form submission error.");
+                    },
+                    success: function (data) {
+                        if (data.result != "success") {
+                            loggy("app", "Form submission failed.");
+                        } else {
+                            loggy("app", "Form submission successful.");
+                            majora.formTrigger("hide");
+                            //formSuccess();
+                        }
+                    }
+                });
+
+                event.preventDefault(); // avoid to execute the actual submit of the form.
+            }
+            form.classList.add('was-validated');
+        }, false);
+    });
+});
