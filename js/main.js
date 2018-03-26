@@ -59,8 +59,9 @@ function initCoverTitle(){
 
 function initSceneTitle() {
   var wipeAnimation = new TimelineMax()
+
   .fromTo("table", 1, {
-    backgroundColor: "rgba(255,255,255,0)",
+    backgroundColor: "transparent",
     color: "#fff",
   }, {
     backgroundColor: "rgba(255,255,255, 1)",
@@ -90,7 +91,6 @@ function initSceneTitle() {
   }, {
     color: "#000",
   }, '0')
-
 
   sceneTitle = new ScrollMagic.Scene({
     triggerElement: "#trig1",
@@ -163,7 +163,7 @@ if (!isMobile) {
   }
 
   //////////// Default
-  var imageURL = "./assets/img/canv-bg-3.jpg";
+  var imageURL = "./assets/img/canv-bg-8.jpg";
 
   if (getUrlParameter('random') == "true"){
     imageURL = "https://picsum.photos/g/1024?random";

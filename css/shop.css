@@ -1,0 +1,198 @@
+* {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+.headerAnim a, .headerAnim span{
+  text-decoration: none !important;
+  position: relative;
+
+}
+
+.headerAnim a:before, .headerAnim span:before{
+  content: "";
+  position: absolute;
+  width: .2em;
+  height: 100%;
+  bottom: 0;
+  right: .6em;
+  background-color: #fff;
+  visibility: hidden;
+  -webkit-transform: scaleY(0);
+  transform: scaleY(0);
+  -webkit-transition: all 0.3s ease-in-out 0s;
+  transition: all 0.3s ease-in-out 0s;
+}
+.headerAnim a:hover:before, .headerAnim span:hover:before {
+  visibility: visible;
+  -webkit-transform: scaleY(1);
+  transform: scaleY(1);
+}
+
+.hovAnim a, .hovAnim span{
+  text-decoration: none !important;
+  position: relative;
+  z-index: 5;
+
+}
+
+.hovAnim a:before, .hovAnim span:before{
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: .2em;
+  bottom: .5em;
+  left: 0;
+  background-color: #fff;
+  visibility: hidden;
+  -webkit-transform: scaleX(0);
+  transform: scaleX(0);
+  -webkit-transition: all 0.3s ease-in-out 0s;
+  transition: all 0.3s ease-in-out 0s;
+  z-index: 5;
+}
+.hovAnim a:hover:before, .hovAnim span:hover:before {
+  visibility: visible;
+  -webkit-transform: scaleX(1);
+  transform: scaleX(1);
+  z-index: 5;
+}
+body {
+  position: relative;
+  min-height: 100%;
+  margin: 0;
+  font-family: font-family: 'Inknut Antiqua', serif;
+  color: #fff;
+  text-align: center;
+  background: #000000;
+  font-size: 2em;
+  line-height: 1.5em;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  /* overflow-x: hidden; */
+}
+h1 {
+  font-size: 5vw;
+  font-family: 'Inknut Antiqua', serif;
+  margin: 0;
+  line-height: 1em;
+  color: #fff;
+  background-color: #000;
+  padding: 40px 30px;
+
+}
+.container {
+  margin: 0;
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  max-width: 100vw;
+  width: 100%;
+}
+
+.wrapper {
+  max-width: 100vw;
+  width: 100%;
+}
+* Landscape phones and down */
+
+@media (max-width: 480px) {
+
+  body {
+    font-size: 1em;
+    line-height: 1em;
+  }
+
+}
+
+
+@media (min-width: 480px) and (max-width: 767px) {
+  body {
+    font-size: 1.5em;
+    line-height: 1.5em;
+  }
+}
+
+/* Portrait tablet to landscape and desktop */
+
+@media (min-width: 768px) and (max-width: 979px) {}
+
+  @media (min-width: 1200px) {
+    .container {
+      max-width: 65vw;
+      width: 100%;
+    }
+    .wrapper {
+      max-width: 65vw;
+      width: 100%;
+    }
+
+  }
+  .merch{
+    padding-top: 100px;
+    margin: 0 auto;
+    max-width: 70%;
+  }
+  .merchInner{
+    width:100%;
+  }
+  .cashMusicBox{
+    grid-column: 1/4;
+    overflow: hidden;
+  }
+  footer {
+    text-align: center;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    width: 70%;
+    margin: auto;
+    font-family: 'Inknut Antiqua', serif;
+
+  }
+
+  footer ul {
+    list-style-type: none;
+  }
+
+  footer a {
+    text-decoration: none;
+    text-align: center;
+    color: #fff;
+    font-size: 1.8em;
+    display: block;
+    padding: .5em;
+  }
+
+  footer a:hover {
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+  }
+
+
+  footer ul {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+
+  footer li {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 0px;
+    flex: 1 1 0;
+    font-size: 14px;
+  }

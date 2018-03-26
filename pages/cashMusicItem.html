@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<head>
+  <title>CASH Music</title>
+  <style>
+  @media (min-width: 600px) {
+    .cm-store.unfeatured-items .cm-inner {
+      grid-template-columns: 1fr 1fr !important;
+    }
+  }
+  .cm-store.unfeatured-items .cm-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .cm-store.cm-front {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  .cm-store.unfeatured-items .cm-inner .cm-store.cm-inner, .cm-store.featured-items .cm-store.cm-inner{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding:0;
+  }
+
+  .cm-store.cm-front .cm-item {
+    background: transparent !important;
+  }
+  .cm-store h2 {
+    font-size: 1.2em;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+
+  .cm-store-flexible-price .cm-store-currency {
+    color: #fff !important;
+  }
+
+  .cm-store.unfeatured-items .cm-item {
+    overflow: hidden;
+  }
+
+  .cm-store .cm-item .cm-item-image-container {
+    width: 100%;
+  }
+  .cm-store .cm-item .cm-item-image{
+    border: none;
+  }
+  .cm-store.cm-item .cm-inner .button{
+    margin:0px;
+  }
+  .cm-itemprice {
+    display:none;
+  }
+
+  .cm-store.unfeatured-items{
+    padding: 2em;
+  }
+  .cm-unavailable {
+    padding-top: 1em;
+  }
+  .cashmusic.element select{
+    background-color: #fff;
+    color: #000;
+  }
+
+  .cm-store.cm-inner h2 {
+    min-height: 6em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1em;
+  }
+  .cm-store .cm-description {
+    min-height: 6em;
+    opacity: 1;
+    font-size: .8em;
+    line-height: 1.5em;
+    text-align: left !important;
+  }
+  .cashmusic.element input, .cashmusic.element select{
+    border-radius: 0px !important;
+  }
+  .cashmusic.element input {
+    font-size: 1.5em;
+    color: #fff;
+    font-family: 'Inknut Antiqua', serif;
+    text-align: center;
+    max-height:2em;
+    text-indent: 0px !important;
+    border: solid 2px #fff;
+    margin:0;
+  }
+  .cashmusic.element input, .cashmusic.element select {
+    border-radius: 0px !important;
+    -webkit-border-radius: 0 !important;
+  }
+  .cm-store .cm-showcart {
+    color: #fff !important;
+    border: solid 2px #fff;
+    padding: 15px;
+    margin-left: 3em;
+    margin-right: 3em;
+    text-transform: uppercase;
+  }
+  .cm-store .cm-showcart:hover {
+    opacity: 1;
+    background: #fff;
+    color: #000 !important;
+  }
+  .cm-store .cm-showcart svg {
+    display:none;
+  }
+
+  /***** Uncomment below to add page background image *****/
+  body{
+    background-color: #000 !important;
+    font-family: 'Inknut Antiqua', serif;
+    font-size: 20px;
+    color: #fff;
+    -webkit-transition: all 0.3s ease-in-out 0s !important;
+    transition: all 0.3s ease-in-out 0s !important;
+  }
+  .cashmusic.element input[type=submit], .cashmusic.element .button{
+    background: #fff;
+    border: none;
+    font-size: .8em;
+    font-family: 'Inknut Antiqua', serif;
+    padding: 0px;
+    min-height: 3em;
+    color: #000;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .cm-store.unfeatured-items .cm-inner .cm-store.cm-inner {
+    text-align: center !important;
+    line-height: 2em;
+  }
+
+  .cashmusic.element .button:hover{
+    background: #000 !important;
+    color: #fff !important;
+    cursor: pointer;
+    opacity: 1 !important;
+    outline: none;
+    border: 2px solid #fff;
+  }
+  .cashmusic.element input[type=submit]:hover, .cashmusic.element .button:hover {
+    background: #000;
+    color: #fff;
+    cursor: pointer;
+    outline: none;
+    border: 2px solid #fff;
+  }
+  </style>
+</head>
+<body>
+  <div id="mainspc">
+    {{{element_markup}}}
+  </div>
+</body>
+</html>
