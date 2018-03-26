@@ -6,6 +6,22 @@
 html {
   height: 100%;
 }
+@media (min-width: 600px) {
+  header {
+    -webkit-writing-mode: vertical-rl;
+    -ms-writing-mode: tb-rl;
+    writing-mode: vertical-rl;
+    -webkit-transform: translate(0, -50%) rotate(180deg);
+    transform: translate(0, -50%) rotate(180deg);
+    position: fixed;
+    top: 50%;
+    left: 0;
+    font-size: 11.1111111vh;
+  }
+}
+header {
+  position: absolute;
+}
 .headerAnim a, .headerAnim span{
   text-decoration: none !important;
   position: relative;
@@ -75,6 +91,9 @@ body {
   justify-content: center;
   /* overflow-x: hidden; */
 }
+a, a:visited, a:active {
+  color: #fff;
+}
 h1 {
   font-size: 5vw;
   font-family: 'Inknut Antiqua', serif;
@@ -143,6 +162,9 @@ h1 {
   .merch{
     padding-top: 100px;
     margin: 0 auto;
+    max-width: 100%;
+  }
+  @media (min-width: 600px) {
     max-width: 70%;
   }
   .merchInner{
