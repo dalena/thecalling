@@ -1,6 +1,6 @@
 #+TITLE: Finalize & Deploy
 [2018-3-26 Mon]
-* TODO Parametrize font
+* DONE Parametrize font
 * TODO Add border to links (make the menu links a bit more visible somehow)
 * WAIT Scrolling bar?
 * SKIP Capitalize "the Calling" // Skip
