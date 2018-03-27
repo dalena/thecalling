@@ -36,25 +36,29 @@
 }
 
 /* width */
+
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 /* Track */
+
 ::-webkit-scrollbar-track {
   background: black;
   border-radius: 10px;
 }
 
 /* Handle */
+
 ::-webkit-scrollbar-thumb {
-  background: white; 
+  background: white;
   border-radius: 10px;
 }
 
 /* Handle on hover */
+
 ::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+  background: #555;
 }
 
 html {
@@ -910,6 +914,7 @@ canvas.b-canvas {
   -webkit-transition: all 0.3s ease-in-out 0s;
   transition: all 0.3s ease-in-out 0s;
   background-color: #000;
+  border-radius: 4px;
   z-index: 5;
 }
 
