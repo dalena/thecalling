@@ -182,6 +182,9 @@ if (!isMobile) {
   if (getUrlParameter('sculpt') == 'false'){
     $("#parallax").hide();
   }
+  if (getUrlParameter('font')){
+    $('.font1').removeClass( "font1" ).addClass( "font" + getUrlParameter('font') );
+  }
 
   $('#myCanvas').ripples({
     resolution: 500,

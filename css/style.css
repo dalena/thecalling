@@ -3,9 +3,18 @@
   box-sizing: border-box;
 }
 
+.font1{
+  font-family: 'Inknut Antiqua', serif;
+}
+
+.font2{
+  font-family: 'Noto Serif', serif;
+}
+
 html {
   height: 100%;
 }
+
 .hovAnim a, .hovAnim span{
   text-decoration: none !important;
   position: relative;
@@ -36,7 +45,6 @@ html {
 }
 
 .link-container {
-  font-family: 'Inknut Antiqua', serif;
   display: inline-block;
   width: 30%;
   max-width: 300px;
@@ -489,7 +497,6 @@ body {
   position: relative;
   min-height: 100%;
   margin: 0;
-  font-family: font-family: 'Inknut Antiqua', serif;
   color: #fff;
   text-align: center;
   background: #000000;
@@ -572,7 +579,6 @@ h1 a {
 
 h1 {
   font-size: 5vw;
-  font-family: 'Inknut Antiqua', serif;
   margin: 0;
   line-height: 1em;
   color: #fff;
@@ -854,7 +860,6 @@ width: 70% !important;
   }
 
   .text {
-    font-family: 'Inknut Antiqua', serif;
     font-weight: 700;
     font-size:.8em;
     line-height: 2em;
@@ -885,8 +890,6 @@ width: 70% !important;
     padding-bottom: 50px;
     width: 70%;
     margin: auto;
-    font-family: 'Inknut Antiqua', serif;
-
   }
 
   footer ul {
