@@ -11,6 +11,30 @@
   font-family: 'Noto Serif', serif;
 }
 
+.font3{
+  font-family: 'Roboto Slab', serif;
+}
+
+.font4{
+  font-family: 'Libre Baskerville', serif;
+}
+
+.font5{
+  font-family: 'Playfair Display', serif;
+}
+
+.font6{
+  font-family: 'Raleway', sans-serif;
+}
+
+.font7{
+  font-family: 'Anton', sans-serif;
+}
+
+.font8{
+  font-family: 'Abril Fatface', cursive;
+}
+
 html {
   height: 100%;
 }

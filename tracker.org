@@ -3,4 +3,4 @@
 * TODO Parametrize font
 * TODO Add border to links (make the menu links a bit more visible somehow)
 * WAIT Scrolling bar?
-* DONE Capitalize "the Calling"
+* SKIP Capitalize "the Calling" // Skip

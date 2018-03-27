@@ -168,11 +168,9 @@ if (!isMobile) {
   if (getUrlParameter('random') == "true"){
     imageURL = "https://picsum.photos/g/1024?random";
   }
-
   if (getUrlParameter('num')){
     imageURL = "./assets/img/canv-bg-"+getUrlParameter('num')+".jpg";
   }
-
   if (getUrlParameter('file')){
     imageURL = "./assets/img/"+getUrlParameter('file');
   }
@@ -185,6 +183,10 @@ if (!isMobile) {
   if (getUrlParameter('font')){
     $('.font1').removeClass( "font1" ).addClass( "font" + getUrlParameter('font') );
   }
+  if (getUrlParameter('regular')){
+    $('h1, h2, a, p').css('font-weight', 400);
+  }
+
 
   $('#myCanvas').ripples({
     resolution: 500,
