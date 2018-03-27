@@ -87,6 +87,7 @@ html {
   -webkit-transition: all 0.3s ease-in-out 0s;
   transition: all 0.3s ease-in-out 0s;
   z-index: 5;
+  border-radius: 200px;
 }
 
 .hovAnim a:hover:before,
