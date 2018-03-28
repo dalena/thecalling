@@ -18,12 +18,15 @@ var getUrlParameter = function getUrlParameter(sParam) {
   }
 };
 
-if (isMobile) {
-  var scene = document.getElementById('parallax');
-  var parallaxInstance = new Parallax(scene);
-  parallaxInstance.friction(0.3, 0.1);
-  parallaxInstance.invert(true, true);
-}
+// if (isMobile) {
+//   console.log("mobile")
+//   var scene = document.getElementById('parallax');
+//   var parallaxInstance = new Parallax(scene);
+//   console.log(parallaxInstance)
+
+//   // parallaxInstance.friction(0.3, 0.1);
+//   // parallaxInstance.invert(true, true);
+// }
 
 var controller = new ScrollMagic.Controller();
 
@@ -157,7 +160,7 @@ initCoverTitle();
 ephemeris();
 
 
-if (!isMobile) {
+if (true) {
   function drop(event) {
     $("#myCanvas").ripples('drop', event.clientX, event.clientY, 20, 0.01);
   }
@@ -187,6 +190,9 @@ if (!isMobile) {
     $('h1, h2, a, p').css('font-weight', 400);
   }
 
+  if(isMobile){
+    $("#parallax").hide();
+  }
 
   $('#myCanvas').ripples({
     resolution: 500,

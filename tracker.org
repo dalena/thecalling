@@ -1,6 +1,7 @@
 #+TITLE: Finalize & Deploy
 [2018-3-26 Mon]
 * DONE Parametrize font
-* TODO Add border to links (make the menu links a bit more visible somehow)
+* DONE Add border to links (make the menu links a bit more visible somehow)
+* DONE Merch in the menu
 * WAIT Scrolling bar?
 * SKIP Capitalize "the Calling" // Skip
