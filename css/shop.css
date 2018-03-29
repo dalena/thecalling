@@ -78,6 +78,7 @@ body {
   min-height: 100%;
   margin: 0;
   font-family: font-family: 'Inknut Antiqua', serif;
+  font-weight: 400;
   color: #fff;
   text-align: center;
   background: #000000;
@@ -102,6 +103,8 @@ h1 {
   color: #fff;
   background-color: #000;
   padding: 40px 30px;
+  font-weight: 400;
+
 
 }
 .container {

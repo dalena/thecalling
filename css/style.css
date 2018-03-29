@@ -126,12 +126,12 @@ html {
   background-color: rgba(255, 255, 255, 0);
   /* text-decoration: none !important; */
   text-transform: uppercase;
-  font-weight: 700;
+  font-weight: 400;
 }
 
 .link-container>h2,
 h3 {
-  font-weight: 700;
+  font-weight: 400;
   color: white;
   border: solid 2px white;
   border-radius: 2px;
@@ -638,7 +638,7 @@ h1 {
   background-color: #000;
   border-radius: 4px;
   padding: 40px 30px;
-  font-weight: 700;
+  font-weight: 400;
 }
 
 header>h1 {
@@ -928,7 +928,7 @@ canvas.b-canvas {
 }
 
 .text {
-  font-weight: 700;
+  font-weight: 400;
   font-size: .8em;
   line-height: 2em;
   position: absolute;
