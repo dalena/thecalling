@@ -183,12 +183,12 @@ if (true) {
   if (getUrlParameter('sculpt') == 'false') {
     $("#parallax").hide();
   }
-  if (getUrlParameter('font')) {
-    $('.font1').removeClass("font1").addClass("font" + getUrlParameter('font'));
-  }
-  if (getUrlParameter('regular')) {
-    $('h1, h2, a, p').css('font-weight', 400);
-  }
+  // if (getUrlParameter('font')) {
+  //   $('.font1').removeClass("font1").addClass("font" + getUrlParameter('font'));
+  // }
+  // if (getUrlParameter('regular')) {
+  //   $('h1, h2, a, p').css('font-weight', 400);
+  // }
 
   if(isMobile){
     $("#parallax").hide();
